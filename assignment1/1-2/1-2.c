@@ -78,7 +78,7 @@ void poly_mul(polynomial* A, polynomial* B, polynomial* D) {
     int* already_in;
     int top_degree = A->coef[0][1] + B->coef[0][1];
 
-    temp = (int**)malloc(sizeof(int*) * D->amount);
+    temp = (int**)malloc(sizeof(int) * D->amount);
     for (int i = 0; i < D->amount; i++)
         temp[i] = (int*)malloc(sizeof(int) * 2);
     already_in = (int*)malloc(sizeof(int*) * (top_degree + 1));

@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 #pragma warning (disable: 4996)
 
 void add_normal(int** A, int** B, int matrix_space) {
@@ -60,31 +59,147 @@ void multiply_normal(int** A, int** B, int matrix_space) {
 	free(D);
 }
 
-void add_sparse(void);
+void add_sparse(int** A, int** B, int A_size, int B_size) {
+	int** C;
+	int malloc_size = A_size + B_size;
+	int C_size;
+	int C_pos = 0;
+	int A_pos = 0;
+	int B_pos = 0;
 
-void multiply_sparse(void);
+	C = (int**)malloc(sizeof(int) * malloc_size);
+	for (int i = 0; i < malloc_size; i++)
+		C[i] = (int*)malloc(sizeof(int) * 3);
+
+	for (int i = 0; i < malloc_size; i++) 
+		for (int j = 0; j < 3; j++)
+			C[i][j] = 0;
+
+	// adding algorithm
+	while (A_pos < A_size && B_pos < B_size){
+		if (A[A_pos][0] < B[B_pos][0]) {
+			C[C_pos][0] = A[A_pos][0];
+			C[C_pos][1] = A[A_pos][1];
+			C[C_pos++][2] += A[A_pos++][2];
+		}
+		else if (A[A_pos][0] > B[B_pos][0]) {
+			C[C_pos][0] = B[B_pos][0];
+			C[C_pos][1] = B[B_pos][1];
+			C[C_pos++][2] += B[B_pos++][2];
+		}
+		else {
+			if (A[A_pos][1] < B[B_pos][1]) {
+				C[C_pos][0] = A[A_pos][0];
+				C[C_pos][1] = A[A_pos][1];
+				C[C_pos++][2] += A[A_pos++][2];
+			}
+			else if (A[A_pos][1] > B[B_pos][1]) {
+				C[C_pos][0] = B[B_pos][0];
+				C[C_pos][1] = B[B_pos][1];
+				C[C_pos++][2] += B[B_pos++][2];
+			}
+			else {
+				C[C_pos][0] = A[A_pos][0];
+				C[C_pos][1] = A[A_pos][1];
+				C[C_pos++][2] += A[A_pos++][2] + B[B_pos++][2];
+			}
+		}
+	}
+
+	if (A_pos < A_size) {
+		for (int i = 0; i < A_size - A_pos; i++) {
+			C[C_pos][0] = A[A_pos][0];
+			C[C_pos][1] = A[A_pos][1];
+			C[C_pos++][2] += A[A_pos++][2];
+		}
+	}
+	else if (B_pos < B_size) {
+		for (int i = 0; i < B_size - B_pos; i++) {
+			C[C_pos][0] = B[B_pos][0];
+			C[C_pos][1] = B[B_pos][1];
+			C[C_pos++][2] += B[B_pos++][2];
+		}
+	}
+
+	C_size = C_pos;
+
+	printf("행렬3+4(%d)\n", C_size * 3);
+	for (int i = 0; i < C_size; i++) {
+		for (int j = 0; j < 3; j++) {
+			printf("%d ", C[i][j]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+
+	for (int j = 0; j < malloc_size; j++)
+		free(C[j]);
+	free(C);
+}
+
+//이거 구현 해야 함
+void multiply_sparse(int** A, int** B, int A_size, int B_size) {
+	int** D;
+	int malloc_size = A_size + B_size;
+	int D_size;
+	int D_pos = 0;
+	int A_pos = 0;
+	int B_pos = 0;
+
+
+	printf("행렬3*4(%d)\n", D_size * 3);
+	for (int i = 0; i < D_size; i++) {
+		for (int j = 0; j < 3; j++) {
+			printf("%d ", D[i][j]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+
+	for (int j = 0; j < malloc_size; j++)
+		free(D[j]);
+	free(D);
+}
+
 
 int main(void) {
 
 	int matrix_space;
 	int** matrix_normal[2];
+	int** matrix_sparse[2];
+	int matrix_sparse_index[2] = { 0 };
+
 	char* str;
 	char* number;
 	int* temp;
 	int temp_index = 0;
 
+	while (1) {
+		printf("행렬의 규격을 입력하세요. ");
+		scanf("%d", &matrix_space);
+		getchar();
 
-	printf("행렬의 규격을 입력하세요. ");
-	scanf("%d", &matrix_space);
-	getchar();
+		if (matrix_space < 2 || matrix_space > 9)
+			printf("2이상 9이하의 숫자를 입력하세요\n");
+		else
+			break;
+	}
 
+	//matrix normal malloc
 	for (int i = 0; i < 2; i++) {
 		matrix_normal[i] = (int**)malloc(sizeof(int) * matrix_space);
 		for (int j = 0; j < matrix_space; j++)
 			matrix_normal[i][j] = (int*)malloc(sizeof(int) * matrix_space);
 	}
+	//matrix sparse malloc
+	for (int i = 0; i < 2; i++) {
+		matrix_sparse[i] = (int**)malloc(sizeof(int) * (matrix_space * matrix_space));
+		for (int j = 0; j < matrix_space * matrix_space; j++)
+			matrix_sparse[i][j] = (int*)malloc(sizeof(int) * 3);
+	}
+
 	str = (char*)malloc(matrix_space * matrix_space * 2 + 1);
-	temp = (int*)malloc(sizeof(int) * matrix_space * matrix_space);
+	temp = (int*)malloc(sizeof(int) * (matrix_space * matrix_space));
 
 
 	for (int i = 0; i < 2; i++) {
@@ -104,30 +219,74 @@ int main(void) {
 				matrix_normal[i][j][k] = temp[temp_index++];
 			}
 		}
+
+		temp_index = 0;
+		while (temp_index < matrix_space * matrix_space) {
+			if (temp[temp_index] != 0) {
+				matrix_sparse[i][matrix_sparse_index[i]][0] = temp_index / matrix_space;
+				matrix_sparse[i][matrix_sparse_index[i]][1] = temp_index % matrix_space;
+				matrix_sparse[i][matrix_sparse_index[i]][2] = temp[temp_index];
+				matrix_sparse_index[i] += 1;
+			}
+			temp_index++;
+		}
+
 	}
+
+	for (int i = 0; i < 2; i++)
+		printf("%d\n", matrix_sparse_index[i]);
+
 
 	free(str);
 	free(temp);
 
+	//matrix normal print
+	printf("방식 1\n\n");
 	for (int i = 0; i < 2; i++) {
 		printf("행렬%d(%d)\n", i % 2 + 1, matrix_space * matrix_space);
 		for (int j = 0; j < matrix_space; j++) {
 			for (int k = 0; k < matrix_space; k++)
 				printf("%d ", matrix_normal[i][j][k]);
-
 			printf("\n");
 		}
 		printf("\n");
 	}
 
+	//matrix normal computation
 	add_normal(matrix_normal[0], matrix_normal[1], matrix_space);
 	multiply_normal(matrix_normal[0], matrix_normal[1], matrix_space);
+	printf("\n");
 
 
+	//matrix sparse print
+	printf("방식 2\n\n");
+	for (int i = 0; i < 2; i++) {
+		printf("행렬%d(%d)\n", i % 2 + 3, 3 * matrix_sparse_index[i]);
+		for (int j = 0; j < matrix_sparse_index[i]; j++) {
+			for (int k = 0; k < 3; k++)
+				printf("%d ", matrix_sparse[i][j][k]);
+			printf("\n");
+		}
+		printf("\n");
+	}
+
+	//matrix sparse computation
+	add_sparse(matrix_sparse[0], matrix_sparse[1], matrix_sparse_index[0], matrix_sparse_index[1]);
+	//multiply_sparse(matrix_sparse[0], matrix_sparse[1], matrix_sparse_index[0], matrix_sparse_index[1]);
+
+
+	//matrix normal free
 	for (int i = 0; i < 2; i++) {
 		for (int j = 0; j < matrix_space; j++)
 			free(matrix_normal[i][j]);
 		free(matrix_normal[i]);
+	}
+
+	//matrix sparse freee
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < matrix_space * matrix_space; j++)
+			free(matrix_sparse[i][j]);
+		free(matrix_sparse[i]);
 	}
 
 	return 0;

@@ -41,7 +41,7 @@ void multiply_normal(int** A, int** B, int matrix_space) {
 		for (int j = 0; j < matrix_space; j++) {
 			D[i][j] = 0;
 			for (int k = 0; k < matrix_space; k++)
-				D[i][j] = D[i][j] + A[i][k] * B[k][j];
+				D[i][j] += A[i][k] * B[k][j];
 		}
 	}
 
@@ -62,7 +62,6 @@ void multiply_normal(int** A, int** B, int matrix_space) {
 void add_sparse(int** A, int** B, int A_size, int B_size) {
 	int** C;
 	int malloc_size = A_size + B_size;
-	int C_size;
 	int C_pos = 0;
 	int A_pos = 0;
 	int B_pos = 0;
@@ -121,10 +120,8 @@ void add_sparse(int** A, int** B, int A_size, int B_size) {
 		}
 	}
 
-	C_size = C_pos;
-
-	printf("행렬3+4(%d)\n", C_size * 3);
-	for (int i = 0; i < C_size; i++) {
+	printf("행렬3+4(%d)\n", C_pos * 3);
+	for (int i = 0; i < C_pos; i++) {
 		for (int j = 0; j < 3; j++) {
 			printf("%d ", C[i][j]);
 		}
@@ -137,18 +134,48 @@ void add_sparse(int** A, int** B, int A_size, int B_size) {
 	free(C);
 }
 
-//이거 구현 해야 함
-void multiply_sparse(int** A, int** B, int A_size, int B_size) {
+void multiply_sparse(int** A, int** B, int A_size, int B_size, int matrix_space) {
 	int** D;
-	int malloc_size = A_size + B_size;
-	int D_size;
+	int malloc_size = matrix_space * matrix_space;
 	int D_pos = 0;
 	int A_pos = 0;
 	int B_pos = 0;
+	int result = 0;
 
+	D = (int**)malloc(sizeof(int) * malloc_size);
+	for (int i = 0; i < malloc_size; i++)
+		D[i] = (int*)malloc(sizeof(int) * 3);
 
-	printf("행렬3*4(%d)\n", D_size * 3);
-	for (int i = 0; i < D_size; i++) {
+	for (int i = 0; i < malloc_size; i++)
+		for (int j = 0; j < 3; j++)
+			D[i][j] = 0;
+
+	//multiply algorithm
+	for (int i = 0; i < matrix_space; i++) {
+		for (int j = 0; j < matrix_space; j++) {
+			result = 0;
+			A_pos = 0;
+			while (A_pos < A_size) {
+				B_pos = 0;
+				while (B_pos < B_size) {
+					if (A[A_pos][0] == i && B[B_pos][1] == j){
+						if (A[A_pos][1] == B[B_pos][0])
+							result += A[A_pos][2] * B[B_pos][2];
+					}
+					B_pos++;
+				}
+				A_pos++;
+			}
+			if (result) {
+				D[D_pos][0] = i;
+				D[D_pos][1] = j;
+				D[D_pos++][2] = result;
+			}
+		}
+	}
+
+	printf("행렬3*4(%d)\n", D_pos * 3);
+	for (int i = 0; i < D_pos; i++) {
 		for (int j = 0; j < 3; j++) {
 			printf("%d ", D[i][j]);
 		}
@@ -272,7 +299,7 @@ int main(void) {
 
 	//matrix sparse computation
 	add_sparse(matrix_sparse[0], matrix_sparse[1], matrix_sparse_index[0], matrix_sparse_index[1]);
-	//multiply_sparse(matrix_sparse[0], matrix_sparse[1], matrix_sparse_index[0], matrix_sparse_index[1]);
+	multiply_sparse(matrix_sparse[0], matrix_sparse[1], matrix_sparse_index[0], matrix_sparse_index[1], matrix_space);
 
 
 	//matrix normal free

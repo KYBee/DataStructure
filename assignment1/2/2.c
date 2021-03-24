@@ -3,6 +3,7 @@
 #include <string.h>
 #pragma warning (disable: 4996)
 
+//두 normal 행렬을 더하는 함수
 void add_normal(int** A, int** B, int matrix_space) {
 	int** C;
 
@@ -30,6 +31,7 @@ void add_normal(int** A, int** B, int matrix_space) {
 	free(C);
 }
 
+//두 normal 행렬을 곱하는 함수
 void multiply_normal(int** A, int** B, int matrix_space) {
 	int** D;
 
@@ -59,6 +61,7 @@ void multiply_normal(int** A, int** B, int matrix_space) {
 	free(D);
 }
 
+//희소 행렬 덧셈
 void add_sparse(int** A, int** B, int A_size, int B_size) {
 	int** C;
 	int malloc_size = A_size + B_size;
@@ -134,6 +137,7 @@ void add_sparse(int** A, int** B, int A_size, int B_size) {
 	free(C);
 }
 
+//희소 행렬 곱셈
 void multiply_sparse(int** A, int** B, int A_size, int B_size, int matrix_space) {
 	int** D;
 	int malloc_size = matrix_space * matrix_space;
@@ -188,7 +192,6 @@ void multiply_sparse(int** A, int** B, int A_size, int B_size, int matrix_space)
 	free(D);
 }
 
-
 int main(void) {
 
 	int matrix_space;
@@ -201,6 +204,7 @@ int main(void) {
 	int* temp;
 	int temp_index = 0;
 
+	//2이상 9이하 범위 외의 숫자 입력 시 예외 처리
 	while (1) {
 		printf("행렬의 규격을 입력하세요. ");
 		scanf("%d", &matrix_space);
@@ -225,6 +229,7 @@ int main(void) {
 			matrix_sparse[i][j] = (int*)malloc(sizeof(int) * 3);
 	}
 
+	//str에 사용자로부터 입력 받은 string 을 받고, 
 	str = (char*)malloc(matrix_space * matrix_space * 2 + 1);
 	temp = (int*)malloc(sizeof(int) * (matrix_space * matrix_space));
 

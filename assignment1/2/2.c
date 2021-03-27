@@ -265,9 +265,6 @@ int main(void) {
 
 	}
 
-	for (int i = 0; i < 2; i++)
-		printf("%d\n", matrix_sparse_index[i]);
-
 
 	free(str);
 	free(temp);

@@ -1,6 +1,8 @@
 import time
 
-MAX_QSIZE = 21
+MAX_QSIZE = 6
+#for debugging
+#MAX_QSIZE = 21
 
 class Queue:
     def __init__(self):
@@ -33,11 +35,16 @@ class Queue:
 
     def display(self):
         out = []
+
         if self.front < self.rear:
             out = self.items[self.front+1:self.rear+1]
         else:
             out = self.items[self.front+1:MAX_QSIZE] + self.items[0:self.rear+1]
-        print("QUEUE=%s (%d)" % ("".join(out), len(out)))
+        
+        if self.isEmpty():
+            print("QUEUE= (0)")
+        else:
+            print("QUEUE=%s (%d)" % ("".join(out), len(out)))
 
 
 ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -55,14 +62,19 @@ while True:
     queue_input_time = int(interrupt_time - start_time)
     queue_input_index %= 26
 
-    if not(system.isFull()):
-        #TODO 큐가 꽉 찼을 때 controlling
-        for i in range(queue_input_time):
+
+    for i in range(queue_input_time):
+        if system.isFull():
+            print("(SYSTEM) ADDQUEUE(%s) FAIL. QueueFull" % ALPHABET[queue_input_index])
+        else:
             print("(SYSTEM) ADDQUEUE(%s)  F=%d R=%d" % (ALPHABET[queue_input_index], system.front, system.rear))
             system.enqueue(ALPHABET[queue_input_index])
-            queue_input_index += 1
+            queue_input_index = (queue_input_index + 1) % 26
 
     for i in range(user_input):
-        print("DELETEQUEUE() = %s, F=%d, R=%d" % (system.dequeue(), system.front, system.rear))
+        if system.isEmpty():
+            print("DELETEQUEUE() FAIL. QueueEmpty")
+        else:
+            print("DELETEQUEUE() = %s, F=%d, R=%d" % (system.dequeue(), system.front, system.rear))
 
     system.display()

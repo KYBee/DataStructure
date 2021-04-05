@@ -46,17 +46,6 @@ class Point:
         self.__location = (row, col)
         self.__checked = False
     
-    def get_down(self):
-        return (self.__location[0] + 1, self.__location[1])
-
-    def get_up(self):
-        return (self.__location[0] - 1, self.__location[1])
-
-    def get_left(self):
-        return (self.__location[0], self.__location[1] - 1)
-
-    def get_right(self):
-        return (self.__location[0], self.__location[1] + 1)
 
 
     def get_location(self):
@@ -136,6 +125,24 @@ class Maze:
             self.composition[row][col].left = 0
             self.composition[row][col].right = 0
 
+    def get_down(self, current):
+        row, col = current.get_location()
+        return self.composition[row + 1][col]
+
+    def get_up(self, current):
+        row, col = current.get_location()
+        return self.composition[row - 1][col]
+
+    def get_left(self, current):
+        row, col = current.get_location()
+        return self.composition[row][col - 1]
+
+    def get_right(self, current):
+        row, col = current.get_location()
+        return self.composition[row][col + 1]
+
+
+
     #get path
     def get_path(self):
         #path_stack initialize
@@ -143,14 +150,19 @@ class Maze:
 
         current = self.start_point
         recent = self.start_point
-
-        row, col = 0, 0
         visited = []
 
         # current가 end_point에 도달할 때 까지
         #while current.get_location() != self.end_point.get_location():
 
-        for i in range(3):
+
+        # 아래의 for은 debugging을 위함
+        for i in range(10):
+
+            #for debugging
+            print("current ", current)
+            print("recent ", recent)
+
 
             # top bottom left right
             temp = [0, 0, 0, 0]
@@ -158,21 +170,54 @@ class Maze:
             # temp 리스트의 길이가 0이면 막혀있음
             # temp 리스트의 길이가 1이면 포인트를 다음 포인트로 변경하여 다음 while 문 진행
             # temp 리스트의 길이가 2이면 해당 포인트를 stack에 넣고 둘 중 하나를 선택한 후 다음 포인트를 진행
-            if current.top and current.get_up() != recent.get_location():
+            if current.top and self.get_up(current).get_location() != recent.get_location():
                 temp[0] = 1
-            if current.bottom and current.get_down() != recent.get_location():
+            if current.bottom and self.get_down(current).get_location() != recent.get_location():
                 temp[1] = 1
-            if current.left and current.get_left() != recent.get_location():
+            if current.left and self.get_left(current).get_location() != recent.get_location():
                 temp[2] = 1
-            if current.right and current.get_right() != recent.get_location():
+            if current.right and self.get_right(current).get_location() != recent.get_location():
                 temp[3] = 1
 
             print(temp)
 
             if (temp[0] + temp[1] + temp[2] + temp[3]) == 1:
-                current, recent = current
+                #visited는 갈림길에서 경로를 찾다가 막힌 경우 pop을 한 이후에 해당 point가 recent가 어디인지를 알기 위해 구현함
+                current.checked = True
+                visited.append(current)
+                
+                #TODO 같은점을 중복해서 지나가는 것을 통제해줘야 함
+                recent = current
+                if temp[0]:
+                    current = self.get_up(current)
+                elif temp[1]:
+                    current = self.get_down(current)
+                elif temp[2]:
+                    current = self.get_left(current)
+                else:
+                    current = self.get_right(current)
 
-            current = self.end_point
+            # 0일 때는 막혔으니 stack에 있는 것을 팝해서 recent로 넣어줌
+            elif (temp[0] + temp[1] + temp[2] + temp[3] == 0):
+                current = path_stack.pop()
+                pop_index = visited.index(current)
+                recent = visited[pop_index - 1]
+                visited = visited[:pop_index + 1]
+
+            # 0도 1도 아니면 두개 이상이기 때문에 이미 가본 경로 (checked) 가 아닌 것으로 선택해서 가도록 함
+            # stack에는 push 함
+            else:
+                path_stack.push(current)
+                if temp[0] and not(self.get_up(current).checked):
+                    pass
+                elif temp[1] and not(self.get_down(current).checked):
+                    pass
+                elif temp[2] and not(self.get_left(current).checked)
+                    pass
+                else:
+                    pass
+
+            print(visited, end="\n\n")
             
 
                

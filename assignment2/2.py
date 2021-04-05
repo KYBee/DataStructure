@@ -4,6 +4,11 @@ class Stack:
         self.top = -1
         self.call = 0
 
+    #for debugging
+    def print_stack(self):
+        for i in self.items:
+            print(i)
+
     def push(self, val):
         self.items.append(val)
         self.call += 1
@@ -44,7 +49,7 @@ class Point:
         self.bottom = 1
         self.left = 1
         self.__location = (row, col)
-        self.__checked = False
+        self.checked = False
     
 
 
@@ -53,12 +58,6 @@ class Point:
     
     def set_location(self, location):
         self.__location = location
-
-    def get_checked(self):
-        return self.__checked
-    
-    def set_checked(self):
-        return self.__checked
 
     def __str__(self):
         return str((self.__location[0], self.__location[1]))
@@ -152,12 +151,25 @@ class Maze:
         recent = self.start_point
         visited = []
 
-        # current가 end_point에 도달할 때 까지
-        #while current.get_location() != self.end_point.get_location():
+        final = []
 
+        # current가 end_point에 도달할 때 까지
+        while current.get_location() != self.end_point.get_location() or not(path_stack.isEmpty()):
 
         # 아래의 for은 debugging을 위함
-        for i in range(10):
+        #for i in range(60):
+
+            path_stack.print_stack()
+
+            if current.get_location() == self.end_point.get_location():
+                print(visited)
+                final.append(visited)
+                current = path_stack.pop()
+                pop_index = visited.index(current)
+                recent= visited[pop_index - 1]
+                visited = visited[:pop_index]
+
+
 
             #for debugging
             print("current ", current)
@@ -182,7 +194,7 @@ class Maze:
             print(temp)
 
             if (temp[0] + temp[1] + temp[2] + temp[3]) == 1:
-                #visited는 갈림길에서 경로를 찾다가 막힌 경우 pop을 한 이후에 해당 point가 recent가 어디인지를 알기 위해 구현함
+                #visited는 갈림길에서 경로를 찾다가 막힌 경우 pop을 한 이후에 해당 Point의 recent가 어디인지를 알기 위해 구현함
                 current.checked = True
                 visited.append(current)
                 
@@ -199,28 +211,48 @@ class Maze:
 
             # 0일 때는 막혔으니 stack에 있는 것을 팝해서 recent로 넣어줌
             elif (temp[0] + temp[1] + temp[2] + temp[3] == 0):
+                current.checked = True
                 current = path_stack.pop()
                 pop_index = visited.index(current)
-                recent = visited[pop_index - 1]
-                visited = visited[:pop_index + 1]
+                recent= visited[pop_index - 1]
+                visited = visited[:pop_index]
 
             # 0도 1도 아니면 두개 이상이기 때문에 이미 가본 경로 (checked) 가 아닌 것으로 선택해서 가도록 함
             # stack에는 push 함
             else:
                 path_stack.push(current)
-                if temp[0] and not(self.get_up(current).checked):
-                    pass
-                elif temp[1] and not(self.get_down(current).checked):
-                    pass
-                elif temp[2] and not(self.get_left(current).checked)
-                    pass
+                visited.append(current)
+                current.checked = True
+                recent = current
+                if temp[0] and self.get_up(current).checked != True:
+                    current = self.get_up(current)
+                elif temp[1] and self.get_down(current).checked != True:
+                    current = self.get_down(current)
+                elif temp[2] and self.get_left(current).checked != True:
+                    current = self.get_left(current)
+                elif temp[3] and self.get_right(current).checked != True:
+                    current = self.get_right(current)
                 else:
-                    pass
+                    current = path_stack.pop()
+                    current = path_stack.pop()
+                    try:
+                        pop_index = visited.index(current)
+                    except:
+                        return final
+                    recent= visited[pop_index - 1]
+                    visited = visited[:pop_index]
 
-            print(visited, end="\n\n")
+            print("\n\n")
+            self.print_checked()
+        
+        return final
             
 
-               
+    def print_checked(self):
+        for row in range(self.maze_row):
+            for col in range(self.maze_col):
+                print("%5s" % self.composition[row][col].checked, end=" ")
+            print()
         
         
     # printing Maze itself
@@ -281,7 +313,11 @@ class Maze:
             print()
 
 
-
 a = Maze()
 a.print_maze()
-a.get_path()
+final = a.get_path()
+
+
+for i in final:
+    for j in i:
+        print(j.get_location())

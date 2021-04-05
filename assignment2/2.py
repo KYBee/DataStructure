@@ -46,16 +46,16 @@ class Point:
         self.__location = (row, col)
         self.__checked = False
     
-    def down(self):
+    def get_down(self):
         return (self.__location[0] + 1, self.__location[1])
 
-    def up(self):
+    def get_up(self):
         return (self.__location[0] - 1, self.__location[1])
 
-    def left(self):
+    def get_left(self):
         return (self.__location[0], self.__location[1] - 1)
 
-    def right(self):
+    def get_right(self):
         return (self.__location[0], self.__location[1] + 1)
 
 
@@ -148,23 +148,33 @@ class Maze:
         visited = []
 
         # current가 end_point에 도달할 때 까지
-        while current.get_location() != self.end_point.get_location():
+        #while current.get_location() != self.end_point.get_location():
+
+        for i in range(3):
+
             # top bottom left right
             temp = [0, 0, 0, 0]
             # 만약 해당 Point에서 열려있고 가장 최근에 방문했던 path가 아닌 것들을 temp리스트에 넣음
             # temp 리스트의 길이가 0이면 막혀있음
             # temp 리스트의 길이가 1이면 포인트를 다음 포인트로 변경하여 다음 while 문 진행
             # temp 리스트의 길이가 2이면 해당 포인트를 stack에 넣고 둘 중 하나를 선택한 후 다음 포인트를 진행
-            if current.top and current.up() != recent.get_location():
+            if current.top and current.get_up() != recent.get_location():
                 temp[0] = 1
-            elif current.bottom and current.down() != recent.get_location():
+            if current.bottom and current.get_down() != recent.get_location():
                 temp[1] = 1
-            elif current.left and current.left() != recent.get_location():
+            if current.left and current.get_left() != recent.get_location():
                 temp[2] = 1
-            elif current.right and current.right() != recent.get_location():
+            if current.right and current.get_right() != recent.get_location():
                 temp[3] = 1
+
+            print(temp)
+
+            if (temp[0] + temp[1] + temp[2] + temp[3]) == 1:
+                current, recent = current
+
+            current = self.end_point
             
-            
+
                
         
         
@@ -229,8 +239,4 @@ class Maze:
 
 a = Maze()
 a.print_maze()
-
-
-b = Point(1, 1)
-print(b.down())
-print(b)
+a.get_path()

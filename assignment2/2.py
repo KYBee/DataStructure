@@ -88,9 +88,9 @@ class Maze:
 
         for row in range(self.maze_row):
             for col in range(self.maze_col):
-                print(row, col, self.commands[row][col])
                 self.set_point(row, col, self.commands[row][col])
         
+
     def set_point(self, row, col, command):
         vertical = command[0]
         horizontal = command[1]
@@ -110,48 +110,12 @@ class Maze:
         elif horizontal == 2:
             self.composition[row][col].left = 0
             self.composition[row][col].right = 0
-        
-    
-    #For Debugging
-    def print_composition(self):
-        for row in range(self.maze_row):
-            for col in range(self.maze_col):
-                print(self.composition[row][col], end=" ")
-            print()
+
 
     def print_maze(self):
+        #print top line
         for col in range(self.maze_col):
-            print("%s" % "___", end="")
-            
-        print()
-        for row in range(self.maze_row):
-            
-            #print left
-            print("|", end="")
-
-            for col in range(self.maze_col):
-
-                #print bottom
-                if not(self.composition[row][col].bottom):
-                    print("%s" % "__", end = "")
-                else:
-                    print("%2s" % " ", end = "")
-                
-                #print right
-                if not(self.composition[row][col].right):
-                    print("%s" % "|", end = "")
-                else:
-                    print("%s" % " ", end = "")
-            
-            print()
-
-    
-
-
-    def print_maze_v2(self):
-        #print top
-        for col in range(self.maze_col):
-            print("%3s" % "____", end="")
+            print("%3s" % "_______", end="")
         print()
 
         #print two rows
@@ -160,35 +124,53 @@ class Maze:
 
             for i in range(2):
 
-                print("|", end=" ")
-
                 for col in range(self.maze_col):
 
-                    if not(self.composition[row][col].right):
-                        print("%s" % "|", end = " ")
+                    if col == 0:
+                        print("|", end="     ")
                     else:
-                        print("%s" % " ", end = " ")
+                        print(" ", end="     ")
+
+                    if not(self.composition[row][col].right):
+                        print("|", end="")
+                    else:
+                        print(" ", end="")
                 print()            
 
             #print last row
-            print("|", end=" ")
 
             for col in range(self.maze_col):
-                if not(self.composition[row][col].bottom):
-                    print("%3s" % "__"*3, end = "")
+
+                if col == 0:
+                    if (self.composition[row][col].bottom):
+                        print("|", end="    ")
+                    else:
+                        print("|", end="____")
+                elif not(self.composition[row][col].bottom):
+                    print("_" * 5, end="")
                 else:
-                    print("%3s" % " "*3, end = "")
+                    print(" " * 5, end="")
+
+
+                if not(self.composition[row][col].bottom):
+                    print("_", end="")
+                else:
+                    print(" ", end="")
+                    
                 
                 #print right
                 if not(self.composition[row][col].right):
-                    print("%2s" % " " * 2, end="")
-                    print("%s" % "|", end = "")
+                    print("|", end = "")
                 else:
-                    print("%3s" % " ", end = "")
+                    if not(self.composition[row][col].bottom):
+                        print("_", end="")
+                    else:
+                        print(" ", end="")
             
             print()
 
 
+
+
 a = Maze()
 a.print_maze()
-a.print_maze_v2()

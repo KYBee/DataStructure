@@ -8,7 +8,7 @@ class Stack:
     def print_stack(self):
         print("printing stack")
         for i in self.items:
-            print(i)
+            print(i.get_location())
 
     def push(self, val):
         self.items.append(val)
@@ -52,15 +52,15 @@ class Point:
         self.__location = (row, col)
         self.checked = False
 
+        self.origin = -1
+
+
 
     def get_location(self):
         return self.__location
     
     def set_location(self, location):
         self.__location = location
-
-    def __str__(self):
-        return str((self.__location[0], self.__location[1]))
 
 class Maze:
     maze_row = 12
@@ -144,35 +144,37 @@ class Maze:
     def get_path(self):
         #path_stack initialize
         path_stack = Stack()
-
-        current = self.start_point
         visited = []
 
+        path_stack.push(self.start_point)
+        current = path_stack.peak()
+        diverge = []
         final = []
 
         # current가 end_point에 도달할 때 까지
-        while current.get_location() != self.end_point.get_location() or not(path_stack.isEmpty()):
+        while not(path_stack.isEmpty()):
+
+        #for i in range(30):
 
         # 아래의 for은 debugging을 위함
-        #for i in range(60):
-
+        #for i in range(20):
             path_stack.print_stack()
 
-            if current.get_location() == self.end_point.get_location():
-                final.append(visited)
+            #if current == self.end_point:
 
-                if len(final) == 2:
-                    return final
-                path_stack.print_stack()
-                current = path_stack.pop()
-                pop_index = visited.index(current)
-                visited = visited[:pop_index]
+            #    final.append(visited)
+            #    break
 
-                self.print_checked()
+            if path_stack.isEmpty():
+                return final
+
 
 
             #for debugging
-            print("current ", current)
+            print("current ", current.get_location())
+            print("visited", list(map(lambda x: x.get_location(), visited)))
+            print("current origin", current.origin)
+            print("diverge", list(map(lambda x: x.get_location(), diverge)))
 
             # top bottom left right
             temp = [0, 0, 0, 0]
@@ -180,76 +182,76 @@ class Maze:
             # temp 리스트의 길이가 0이면 막혀있음
             # temp 리스트의 길이가 1이면 포인트를 다음 포인트로 변경하여 다음 while 문 진행
             # temp 리스트의 길이가 2이면 해당 포인트를 stack에 넣고 둘 중 하나를 선택한 후 다음 포인트를 진행
-            if current.top and not(self.get_up(current).checked):
+            if current.top and current.origin != 0 and self.get_up(current) not in diverge:
                 temp[0] = 1
-            if current.bottom and not(self.get_down(current).checked):
+            if current.bottom and current.origin != 1 and self.get_down(current) not in diverge:
                 temp[1] = 1
-            if current.left and not(self.get_left(current).checked):
+            if current.left and current.origin != 2 and self.get_left(current) not in diverge:
                 temp[2] = 1
-            if current.right and not(self.get_right(current).checked):
+            if current.right and current.origin != 3 and self.get_right(current) not in diverge:
                 temp[3] = 1
 
             print(temp)
 
-            if (temp[0] + temp[1] + temp[2] + temp[3]) == 1:
-                #visited는 갈림길에서 경로를 찾다가 막힌 경우 pop을 한 이후에 해당 Point의 recent가 어디인지를 알기 위해 구현함
-                current.checked = True
-                visited.append(current)
-                
-                #TODO 같은점을 중복해서 지나가는 것을 통제해줘야 함
-                if temp[0]:
-                    current = self.get_up(current)
-                elif temp[1]:
-                    current = self.get_down(current)
-                elif temp[2]:
-                    current = self.get_left(current)
-                else:
-                    current = self.get_right(current)
+            if (temp[0] + temp[1] + temp[2] + temp[3]) == 0:
 
-            # 0일 때는 막혔으니 stack에 있는 것을 팝해서 recent로 넣어줌
-            elif (temp[0] + temp[1] + temp[2] + temp[3] == 0):
-                current.checked = True
-                visited.append(current)
+                pop_index = visited.index(diverge[-2])
+                diverge_target = diverge[-1]
+                visited, initialize = visited[:pop_index + 1], visited[pop_index+1:]
+                diverge = diverge[:-3]
+                diverge.append(diverge_target)
                 current = path_stack.pop()
-                pop_index = visited.index(current)
-                visited, initialize = visited[:pop_index], visited[pop_index + 1:]
-                current.checked = False
-                if len(initialize):
-                    for i in initialize:
-                        i.checked = False
-                    initialize[0].checked = True
 
-            # 0도 1도 아니면 두개 이상이기 때문에 이미 가본 경로 (checked) 가 아닌 것으로 선택해서 가도록 함
-            # stack에는 push 함
+                for i in initialize:
+                    pass
+
             else:
-                path_stack.push(current)
+
+
                 visited.append(current)
-                current.checked = True
-                if temp[0] and self.get_up(current).checked != True:
-                    current = self.get_up(current)
-                elif temp[1] and self.get_down(current).checked != True:
-                    current = self.get_down(current)
-                elif temp[2] and self.get_left(current).checked != True:
-                    current = self.get_left(current)
-                elif temp[3] and self.get_right(current).checked != True:
-                    current = self.get_right(current)
+                target = current
+
+                if temp[0]:
+                    target = self.get_up(current)
+                    target.origin = 1
+                    path_stack.push(target)
+
+                if temp[2]:
+                    target = self.get_left(current)
+                    target.origin = 3
+                    path_stack.push(target)
+
+                if temp[1]:
+                    target = self.get_down(current)
+                    target.origin = 0
+                    path_stack.push(target)
+
+                if temp[3]:
+                    target = self.get_right(current)
+                    target.origin = 2
+                    path_stack.push(target)
+                
+                if (temp[0] + temp[1] + temp[2] + temp[3]) > 1:
+                    diverge.append(current)
+                    current = path_stack.pop()
+                    diverge.append(current)
                 else:
                     current = path_stack.pop()
 
 
 
             print("\n\n")
-            self.print_checked()
+
+            if current == self.end_point:
+                final.append(visited)
+            if current == self.end_point or current == self.start_point:
+                current = path_stack.pop()
+                continue
+
         
+        final.append(visited)
         return final
             
-
-    def print_checked(self):
-        for row in range(self.maze_row):
-            for col in range(self.maze_col):
-                print("%5s" % self.composition[row][col].checked, end=" ")
-            print()
-        
         
     # printing Maze itself
     def print_maze(self):
@@ -313,7 +315,5 @@ a = Maze()
 a.print_maze()
 final = a.get_path()
 
-
 for i in final:
-    for j in i:
-        print(j.get_location())
+    print(list(map(lambda x: x.get_location(), i)))

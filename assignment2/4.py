@@ -168,6 +168,7 @@ class Maze:
             if path_stack.isEmpty():
                 return final
 
+            #TODO Stack에 애초에 넣을 때 direction을 포함해서 넣어주자
 
 
             #for debugging
@@ -182,13 +183,13 @@ class Maze:
             # temp 리스트의 길이가 0이면 막혀있음
             # temp 리스트의 길이가 1이면 포인트를 다음 포인트로 변경하여 다음 while 문 진행
             # temp 리스트의 길이가 2이면 해당 포인트를 stack에 넣고 둘 중 하나를 선택한 후 다음 포인트를 진행
-            if current.top and current.origin != 0 and self.get_up(current) not in diverge:
+            if current.top and (current.origin != 0 or self.get_up(current) not in visited):
                 temp[0] = 1
-            if current.bottom and current.origin != 1 and self.get_down(current) not in diverge:
+            if current.bottom and (current.origin != 1 or self.get_down(current) not in visited):
                 temp[1] = 1
-            if current.left and current.origin != 2 and self.get_left(current) not in diverge:
+            if current.left and (current.origin != 2 or self.get_left(current) not in visited):
                 temp[2] = 1
-            if current.right and current.origin != 3 and self.get_right(current) not in diverge:
+            if current.right and (current.origin != 3 or self.get_right(current) not in visited):
                 temp[3] = 1
 
             print(temp)
@@ -250,6 +251,10 @@ class Maze:
 
         
         final.append(visited)
+
+        print("visited", list(map(lambda x: x.get_location(), visited)))
+        print("diverge", list(map(lambda x: x.get_location(), diverge)))
+
         return final
             
         

@@ -38,6 +38,7 @@ class Point:
         self.bottom = 1
         self.left = 1
         self.__location = (row, col)
+        self.icon = " "
 
     def get_location(self):
         return self.__location
@@ -68,6 +69,7 @@ class Maze:
 
     def __init__(self):
         #make empty 2 dimension list
+        self.final_path = []
         self.composition = [[0 for col in range(self.maze_col)] for row in range(self.maze_row)]
         
         #assign Point class to each 2 dimension list
@@ -122,6 +124,10 @@ class Maze:
         row, col = current.get_location()
         return self.composition[row][col + 1]
 
+    def set_path(self):
+        for point in self.final_path:
+            point.icon = "*"
+
     #get path
     def get_path(self):
         #path_stack initialize
@@ -129,6 +135,7 @@ class Maze:
         visited = []
 
         path_stack.push([self.start_point, self.start_point])
+        print("PUSH", path_stack.peak()[0].get_location())
         current = path_stack.peak()[0]
         recent = path_stack.peak()[1]
         final = []
@@ -137,7 +144,10 @@ class Maze:
         while True:
 
             if path_stack.isEmpty():
-                return final
+                print("\n스택 활용 횟수 %d회\n" % path_stack.call)
+                self.final_path = final
+                self.print_result()
+                break
 
             # top bottom left right
             temp = [0, 0, 0, 0]
@@ -154,9 +164,9 @@ class Maze:
             if current.right and self.get_right(current) not in visited:
                 temp[3] = 1
 
-
             #막혔다면
             if (temp[0] + temp[1] + temp[2] + temp[3]) == 0:
+                print("POP", path_stack.peak()[0].get_location())
 
                 previous_point = path_stack.pop()
                 current = previous_point[0]
@@ -166,36 +176,44 @@ class Maze:
 
             #막히지 않았다면
             else:
-
-                visited.append(current)
                 target = current
 
                 if temp[0]:
                     target = self.get_up(current)
                     path_stack.push([target, current])
+                    print("PUSH", path_stack.peak()[0].get_location())
 
                 if temp[2]:
                     target = self.get_left(current)
                     path_stack.push([target, current])
+                    print("PUSH", path_stack.peak()[0].get_location())
 
                 if temp[1]:
                     target = self.get_down(current)
                     path_stack.push([target, current])
+                    print("PUSH", path_stack.peak()[0].get_location())
 
                 if temp[3]:
                     target = self.get_right(current)
                     path_stack.push([target, current])
+                    print("PUSH", path_stack.peak()[0].get_location())
                 
+                if current == self.end_point:
+                    visited.append(current)
+                    end_point_index = visited.index(current)
 
+                    final.append(visited[:end_point_index + 1])
+                else:
+                    visited.append(current)
+
+
+                print("POP", path_stack.peak()[0].get_location())
                 next_point = path_stack.pop()
                 current = next_point[0]
                 recent = next_point[1]
 
-            if current == self.end_point:
-                final.append(visited)
-        
-        return final
-            
+
+                    
     # printing Maze itself
     def print_maze(self):
 
@@ -212,10 +230,19 @@ class Maze:
 
                 for col in range(self.maze_col):
 
-                    if col == 0:
-                        print("|", end="     ")
+                    if i == 1 and self.composition[row][col].icon != " ":
+                        if col == 0:
+                            print("|", end=" ")
+                            print(self.composition[row][col].icon * 2, end="  ")
+                        else:
+                            print(" ", end=" ")
+                            print(self.composition[row][col].icon * 2, end="  ")
                     else:
-                        print(" ", end="     ")
+                        if col == 0:
+                            print("|", end="     ")
+                        else:
+                            print(" ", end="     ")                        
+
 
                     if not(self.composition[row][col].right):
                         print("|", end="")
@@ -253,10 +280,29 @@ class Maze:
                         print(" ", end="")
             print()
 
+    def print_result(self):
+        paths = self.final_path
+
+        if len(paths):
+            print("모두 %d개의 길을 찾았습니다." % len(paths))
+            print("가장 짧은 길을 표시합니다")
+            final = paths[0]
+            for path in paths[1:]:
+                if len(path) < len(final):
+                    final = path
+
+            self.final_path = final
+            #시작점은 거리계산에서 빼기 때문에 -1을 해줌
+            print("(거리 %d)" % (len(final) - 1))
+        else:
+            print("경로가 없습니다.")
 
 a = Maze()
+print("미로를 표시합니다.")
 a.print_maze()
-final = a.get_path()
 
-for i in final:
-    print(list(map(lambda x: x.get_location(), i)))
+a.get_path()
+a.set_path()
+
+print("최종 경로를 표시합니다.")
+a.print_maze()

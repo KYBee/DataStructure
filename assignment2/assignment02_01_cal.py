@@ -71,7 +71,7 @@ def get_postfix(equation):
     while not Operator_stack.isEmpty():
         postfix_equation.append(Operator_stack.pop())
 
-    return(postfix_equation)
+    return postfix_equation
 
 
 def get_value(equation):
@@ -108,52 +108,46 @@ def get_value(equation):
 
 def print_error(space):
     print(" " * space + "^ 이 위치에 오류가 있습니다.")
+    print(space)
     return True
 
 
 while True:
     equation = input("")
     operator = {"+": 1, "-": 1, "*": 2, "%": 2, "^": 3}
-    errored = False
-
-    if not equation[0].isnumeric():
-        errored = print_error(space)
-    elif equation[-1] in operator.keys():
-        print(' ' * (len(equation)-1), end="")
-        errored = print_error(space)
+    error = False
+    space = 0
+    if equation[-1] in operator.keys():
+        space = len(equation)-1
+        error = print_error(space)
     else:
-        flag = [0, 0]  # isnum, braket_opened
-        space = 0
+        flag = [0, 0]  # isnum, bracket_opened
         for e in equation:
 
             if e.isnumeric():
-                space += 1
                 flag = [1, flag[1]]
-            elif e not in operator.keys():
-                errored = print_error(space)
-                break
             elif e == "(":
-                if flag[0] == 1:
-                    errored = print_error(space)
-                    break
-                flag[1] = 1
-                space += 1
+                if flag[0]:  # 괄호 앞은 숫자가 올 수 없다.
+                    error = print_error(space)
+                flag[1] += 1
             elif e == ")":
                 if not flag[1]:
-                    errored = print_error(space)
-                    break
-                else:
-                    flag[1] = 0
-                    space += 1
+                    error = print_error(space)
+                flag[1] -= 1
+            elif e not in operator.keys():
+                error = print_error(space)
             else:
-                if not flag[0]:
-                    errored = print_error(space)
-                    break
-                space += 1
+                if not flag[0]:  # 연산자의 바로 이전은 숫자이어야 한다.
+                    error = print_error(space)
                 flag = [0, flag[1]]
+
+            if error:
+                break
+            space += 1
+
         else:
             if flag[1]:
-                errored = print_error(space)
+                error = print_error(space)
 
-    if not errored:
+    if not error:
         print(f"= {get_value(equation)}")

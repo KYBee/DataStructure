@@ -1,8 +1,8 @@
 import time
 
-MAX_QSIZE = 6
-#for debugging
-#MAX_QSIZE = 21
+
+MAX_QSIZE = 21
+
 
 class Queue:
     def __init__(self):
@@ -12,23 +12,23 @@ class Queue:
 
     def isEmpty(self):
         return self.front == self.rear
-    
+
     def isFull(self):
         return self.front == (self.rear + 1) % MAX_QSIZE
-    
+
     def clear(self):
         self.front = self.rear
-    
+
     def enqueue(self, item):
         if not self.isFull():
             self.rear = (self.rear + 1) % MAX_QSIZE
             self.items[self.rear] = item
-        
+
     def dequeue(self):
         if not self.isEmpty():
             self.front = (self.front+1) % MAX_QSIZE
             return self.items[self.front]
-        
+
     def peek(self):
         if not self.isEmpty():
             return self.items[(self.front + 1) % MAX_QSIZE]
@@ -39,8 +39,9 @@ class Queue:
         if self.front < self.rear:
             out = self.items[self.front+1:self.rear+1]
         else:
-            out = self.items[self.front+1:MAX_QSIZE] + self.items[0:self.rear+1]
-        
+            out = self.items[self.front+1:MAX_QSIZE] + \
+                self.items[0:self.rear+1]
+
         if self.isEmpty():
             print("QUEUE= (0)")
         else:
@@ -62,12 +63,13 @@ while True:
     queue_input_time = int(interrupt_time - start_time)
     queue_input_index %= 26
 
-
     for i in range(queue_input_time):
         if system.isFull():
-            print("(SYSTEM) ADDQUEUE(%s) FAIL. QueueFull" % ALPHABET[queue_input_index])
+            print("(SYSTEM) ADDQUEUE(%s) FAIL. QueueFull" %
+                  ALPHABET[queue_input_index])
         else:
-            print("(SYSTEM) ADDQUEUE(%s)  F=%d R=%d" % (ALPHABET[queue_input_index], system.front, system.rear))
+            print("(SYSTEM) ADDQUEUE(%s)  F=%d R=%d" %
+                  (ALPHABET[queue_input_index], system.front, system.rear))
             system.enqueue(ALPHABET[queue_input_index])
             queue_input_index = (queue_input_index + 1) % 26
 
@@ -75,6 +77,7 @@ while True:
         if system.isEmpty():
             print("DELETEQUEUE() FAIL. QueueEmpty")
         else:
-            print("DELETEQUEUE() = %s, F=%d, R=%d" % (system.dequeue(), system.front, system.rear))
+            print("DELETEQUEUE() = %s, F=%d, R=%d" %
+                  (system.dequeue(), system.front, system.rear))
 
     system.display()

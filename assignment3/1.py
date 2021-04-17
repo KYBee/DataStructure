@@ -1,8 +1,9 @@
 import random
 import string
+import time
 
 #Define Data Size
-DATA_SIZE = 10
+DATA_SIZE = 50000
 
 #학번 8자리 출력
 #O(n)
@@ -16,15 +17,18 @@ for r in random_id:
 
 #Producing original data
 print("Original Data")
-for student in original_data:
-    print(student)
+#for student in original_data:
+#    print(student)
 
 
 #Sorting by Python inherited method
 #Sorted는 정렬 대상이 되는 Data를 받아 정렬한 리스트를 리턴하기 때문에 기존의 데이터는 변화가 없다.
+python_inherited_sorting_time = time.time()
 python_inherited_sorting = sorted(original_data, key=lambda name: name[1])
+python_inherited_sorting_time = time.time() - python_inherited_sorting_time
 
+print(python_inherited_sorting_time)
 
 print('\nPython inherited sorting')
-for student in python_inherited_sorting:
-    print(student)
+#for student in python_inherited_sorting:
+#    print(student)

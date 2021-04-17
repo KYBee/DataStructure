@@ -3,10 +3,39 @@ import string
 import time
 
 #Define Data Size
-DATA_SIZE = 10
+DATA_SIZE = 50000
 
 #학번 8자리 출력
 #O(n)
+
+#stack
+class Stack:
+    def __init__(self):
+        self.items = []
+        self.top = -1
+
+    def push(self, val):
+        self.items.append(val)
+
+    def pop(self):
+        try:
+            return self.items.pop()
+        except IndexError:
+            print("Stack is empty")
+
+    def __len__(self):
+        return len(self.items)
+
+    def isEmpty(self):
+        return self.__len__() == 0
+
+    def peak(self):
+        try:
+            return self.items[-1]
+        except IndexError:
+            print("Stack is empty")
+
+
 
 #implementing Heap-sort
 def adjust(a, i, size):
@@ -26,7 +55,6 @@ def adjust(a, i, size):
         a[root], a[child] = a[child], a[root]
         i = child
 
-
 def heap_sort(a):
     hsize = len(a) - 1   
     #initializing
@@ -40,6 +68,62 @@ def heap_sort(a):
         hsize -= 1
     
     return a
+
+
+
+#Quick Sort with no recursive
+def partition(a, start, end):
+    pivot = a[start][1]
+    left = start + 1
+    right = end
+    while True:
+        while left <= right and a[left][1] <= pivot:
+            left += 1
+        while left <= right and a[right][1] > pivot:
+            right -= 1
+
+        if right < left:
+            break
+        else: 
+            a[left], a[right] = a[right], a[left]
+    
+    a[start], a[right] = a[right], a[start]
+    return right
+
+def quicksort_without_recursive(a):
+    num_stack = Stack()
+    num_stack.push(0)
+    num_stack.push(len(a) - 1)
+
+    while not num_stack.isEmpty():
+        end = num_stack.pop()
+        start = num_stack.pop()
+        pivot = partition(a, start, end)
+
+        if pivot - 1 > start:
+            num_stack.push(start)
+            num_stack.push(pivot - 1)
+        
+        if pivot + 1 < end:
+            num_stack.push(pivot + 1)
+            num_stack.push(end)
+    
+    return a
+
+
+#quicksort with recursive
+def quicksort_recursive(a):
+    if len(a) <= 1:
+        return a
+    
+    pivot = a[0]
+    tail = a[1:]
+
+    left = [x for x in tail if x[1] <= pivot[1]]
+    right = [x for x in tail if x[1] > pivot[1]]
+
+    return quicksort_recursive(left) + [pivot] + quicksort_recursive(right)
+
 
 
 
@@ -58,7 +142,8 @@ print("Original Data")
 #    print(student)
 
 selection_sorting_data = original_data.copy()
-quick_sorting_data = original_data.copy()
+quick_sorting_without_recursive_data = original_data.copy()
+quick_sorting_with_recursive_data = original_data.copy()
 heap_sorting_data = original_data.copy()
 
 
@@ -81,8 +166,40 @@ heap_sorting_time = time.time()
 heap_sort(heap_sorting_data)
 heap_sorting_time = time.time() - heap_sorting_time
 
-#Python inherited sorting result
+#Heap sorting result
 print('\nHeap-sorting')
-for student in heap_sorting_data:
-    print(student)
+#for student in heap_sorting_data:
+#    print(student)
 print(heap_sorting_time)
+
+
+
+
+
+
+#Sorting by Quick-sorting withtout recursive
+quick_sorting_without_recursive_time = time.time()
+quicksort_without_recursive(quick_sorting_without_recursive_data)
+quick_sorting_without_recursive_time = time.time() - quick_sorting_without_recursive_time
+
+#Quick sorting without recursive result
+print('\nQuick-sorting without recursive')
+#for student in quick_sorting_without_recursive_data:
+#    print(student)
+print(quick_sorting_without_recursive_time)
+
+
+
+
+
+
+#Sorting by Quick-sorting with recursive
+quick_sorting_with_recursive_time = time.time()
+quick_sorting_with_recursive_data = quicksort_recursive(quick_sorting_with_recursive_data)
+quick_sorting_with_recursive_time = time.time() - quick_sorting_with_recursive_time
+
+#Quick sorting with recursive result
+print('\nQuick-sorting with recursive')
+#for student in quick_sorting_with_recursive_data:
+#    print(student)
+print(quick_sorting_with_recursive_time)

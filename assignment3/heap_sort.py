@@ -15,22 +15,21 @@ def adjust(a, i, size):
         a[root], a[child] = a[child], a[root]
         i = child
 
-    return a
 
 def heap_sort(a):
     hsize = len(a) - 1   
     #initializing
     for i in reversed(range((hsize + 1)//2)):
-        a = adjust(a, i, hsize)
+        adjust(a, i, hsize)
 
     #sorting
     for i in range(hsize):
         a[0], a[hsize] = a[hsize], a[0]
-        a = adjust(a, 0, hsize-1)
+        adjust(a, 0, hsize-1)
         hsize -= 1
     
-    return a
 
 num_list = [3, 5, 1, 2, 4, 8, 9, 10, 111]
 
-print(heap_sort(num_list))
+heap_sort(num_list)
+print(num_list)

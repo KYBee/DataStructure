@@ -3,7 +3,7 @@ import string
 import time
 
 #Define Data Size
-DATA_SIZE = 50000
+DATA_SIZE = 10
 
 #학번 8자리 출력
 #O(n)
@@ -26,18 +26,17 @@ def adjust(a, i, size):
         a[root], a[child] = a[child], a[root]
         i = child
 
-    return a
 
 def heap_sort(a):
     hsize = len(a) - 1   
     #initializing
     for i in reversed(range((hsize + 1)//2)):
-        a = adjust(a, i, hsize)
+        adjust(a, i, hsize)
 
     #sorting
     for i in range(hsize):
         a[0], a[hsize] = a[hsize], a[0]
-        a = adjust(a, 0, hsize-1)
+        adjust(a, 0, hsize-1)
         hsize -= 1
     
     return a
@@ -79,11 +78,11 @@ print(python_inherited_sorting_time)
 
 #Sorting by Heap-sorting
 heap_sorting_time = time.time()
-heap_result = heap_sort(heap_sorting_data)
+heap_sort(heap_sorting_data)
 heap_sorting_time = time.time() - heap_sorting_time
 
 #Python inherited sorting result
 print('\nHeap-sorting')
-#for student in heap_result:
-#    print(student)
+for student in heap_sorting_data:
+    print(student)
 print(heap_sorting_time)

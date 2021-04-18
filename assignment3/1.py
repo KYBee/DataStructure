@@ -3,10 +3,7 @@ import string
 import time
 
 #Define Data Size
-DATA_SIZE = 50000
-
-#학번 8자리 출력
-#O(n)
+DATA_SIZE = 10000
 
 #stack
 class Stack:
@@ -34,7 +31,6 @@ class Stack:
             return self.items[-1]
         except IndexError:
             print("Stack is empty")
-
 
 
 #implementing Heap-sort
@@ -125,9 +121,22 @@ def quicksort_recursive(a):
     return quicksort_recursive(left) + [pivot] + quicksort_recursive(right)
 
 
+#Selection Sort
+def selection_sort(a):
+    l = len(a)
+    for i in range(l - 1):
+        least = i
+        for j in range(i + 1, l):
+            if a[j][1] < a[least][1]:
+                least = j
+        
+        a[i], a[least] = a[least], a[i]
 
 
-#Make Data
+
+#Making Original Data
+#학번 8자리 출력
+#O(n)
 random_id = random.sample(range(10000000, 100000000), DATA_SIZE)
 original_data = list()
 for r in random_id:
@@ -136,11 +145,13 @@ for r in random_id:
     original_data.append([r, name, phone_number])
 
 
-#Producing original data
+#Printing original data
 print("Original Data")
 #for student in original_data:
 #    print(student)
 
+
+#Copy Original Data for Comparing Results
 selection_sorting_data = original_data.copy()
 quick_sorting_without_recursive_data = original_data.copy()
 quick_sorting_with_recursive_data = original_data.copy()
@@ -148,25 +159,28 @@ heap_sorting_data = original_data.copy()
 
 
 
-#Sorting by Python inherited method
+#Sorting by Python Inherited Method
 #Sorted는 정렬 대상이 되는 Data를 받아 정렬한 리스트를 리턴하기 때문에 기존의 데이터는 변화가 없다.
 python_inherited_sorting_time = time.time()
 python_inherited_sorting = sorted(original_data, key=lambda name: name[1])
 python_inherited_sorting_time = time.time() - python_inherited_sorting_time
 
-#Python inherited sorting result
+#Python Inherited Sorting Result
 print('\nPython inherited sorting')
 #for student in python_inherited_sorting:
 #    print(student)
 print(python_inherited_sorting_time)
 
 
-#Sorting by Heap-sorting
+
+
+
+#HeapSorting
 heap_sorting_time = time.time()
 heap_sort(heap_sorting_data)
 heap_sorting_time = time.time() - heap_sorting_time
 
-#Heap sorting result
+#HeapSorting result
 print('\nHeap-sorting')
 #for student in heap_sorting_data:
 #    print(student)
@@ -177,29 +191,41 @@ print(heap_sorting_time)
 
 
 
-#Sorting by Quick-sorting withtout recursive
+#QuickSorting without Recursive
 quick_sorting_without_recursive_time = time.time()
 quicksort_without_recursive(quick_sorting_without_recursive_data)
 quick_sorting_without_recursive_time = time.time() - quick_sorting_without_recursive_time
 
-#Quick sorting without recursive result
+#QuickSorting without Recursive
 print('\nQuick-sorting without recursive')
 #for student in quick_sorting_without_recursive_data:
 #    print(student)
 print(quick_sorting_without_recursive_time)
 
 
-
-
-
-
-#Sorting by Quick-sorting with recursive
+#QuickSorting with Recursive
 quick_sorting_with_recursive_time = time.time()
 quick_sorting_with_recursive_data = quicksort_recursive(quick_sorting_with_recursive_data)
 quick_sorting_with_recursive_time = time.time() - quick_sorting_with_recursive_time
 
-#Quick sorting with recursive result
+#QuickSorting with Recursive Result
 print('\nQuick-sorting with recursive')
 #for student in quick_sorting_with_recursive_data:
 #    print(student)
 print(quick_sorting_with_recursive_time)
+
+
+
+
+
+
+#SelectionSorting
+selection_sorting_time = time.time()
+selection_sort(selection_sorting_data)
+selection_sorting_time = time.time() - selection_sorting_time
+
+#SelectionSorting Result
+print('\nselection-sorting')
+#for student in selection_sorting_data:
+#    print(student)
+print(selection_sorting_time)

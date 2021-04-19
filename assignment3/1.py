@@ -5,7 +5,7 @@ import time
 #Define Data Size
 DATA_SIZE = 10000
 
-#stack
+#Stack
 class Stack:
     def __init__(self):
         self.items = []
@@ -33,7 +33,7 @@ class Stack:
             print("Stack is empty")
 
 
-#implementing Heap-sort
+#Codes for HeapSort
 def adjust(a, i, size):
     while 2 * i + 1 <= size:
     #node의 왼쪽 index를 저장, root에는 root node의 index 저장
@@ -67,7 +67,7 @@ def heap_sort(a):
 
 
 
-#Quick Sort with no recursive
+#Codes for QuickSort with no Recursive
 def partition(a, start, end):
     pivot = a[start][1]
     left = start + 1
@@ -107,7 +107,7 @@ def quicksort_without_recursive(a):
     return a
 
 
-#quicksort with recursive
+#Codes for QuickSort with Recursive
 def quicksort_recursive(a):
     if len(a) <= 1:
         return a
@@ -121,7 +121,7 @@ def quicksort_recursive(a):
     return quicksort_recursive(left) + [pivot] + quicksort_recursive(right)
 
 
-#Selection Sort
+#Codes for SelectionSort
 def selection_sort(a):
     l = len(a)
     for i in range(l - 1):

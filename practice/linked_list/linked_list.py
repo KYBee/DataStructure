@@ -43,17 +43,13 @@ class LinkedList:
         del removed
     
     def display(self):
+        if self.head == None:
+            print("empty")
         node = self.head
-        while node is not None:
-            print(node.data, end=" -> ")
+        while node != None:
+            print(node.data)
             node = node.link
-        
-        print()
 
 s = LinkedList()
 s.insert(0, 10)
-s.display()
-s.insert(0, 20)
-s.display()
-s.insert(1, 30)
 s.display()

@@ -140,7 +140,7 @@ def selection_sort(a):
 random_id = random.sample(range(10000000, 100000000), DATA_SIZE)
 original_data = list()
 for r in random_id:
-    name = ''.join(random.choice(string.ascii_uppercase) for _ in range(8))
+    name = ''.join(random.choice(string.ascii_uppercase) for _ in range(10))
     phone_number = "010" + str(format(random.randint(0, 100000000), "08")) 
     original_data.append([r, name, phone_number])
 

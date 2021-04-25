@@ -145,12 +145,6 @@ for r in random_id:
     original_data.append([r, name, phone_number])
 
 
-#Printing original data
-print("Original Data")
-#for student in original_data:
-#    print(student)
-
-
 #Copy Original Data for Comparing Results
 selection_sorting_data = original_data.copy()
 quick_sorting_without_recursive_data = original_data.copy()
@@ -167,9 +161,10 @@ python_inherited_sorting_time = time.time() - python_inherited_sorting_time
 
 #Python Inherited Sorting Result
 print('\nPython inherited sorting')
-#for student in python_inherited_sorting:
-#    print(student)
-print(python_inherited_sorting_time)
+for idx in range(DATA_SIZE):
+    if idx % 1000 == 0:
+        print(python_inherited_sorting[idx])
+print("python inherited sorting time :", python_inherited_sorting_time, end="\n\n")
 
 
 
@@ -181,10 +176,11 @@ heap_sort(heap_sorting_data)
 heap_sorting_time = time.time() - heap_sorting_time
 
 #HeapSorting result
-print('\nHeap-sorting')
-#for student in heap_sorting_data:
-#    print(student)
-print(heap_sorting_time)
+print('\nHeap-Sorting')
+for idx in range(DATA_SIZE):
+    if idx % 1000 == 0:
+        print(heap_sorting_data[idx])
+print("Heap-Sorting time :", heap_sorting_time, end="\n\n")
 
 
 
@@ -197,10 +193,11 @@ quicksort_without_recursive(quick_sorting_without_recursive_data)
 quick_sorting_without_recursive_time = time.time() - quick_sorting_without_recursive_time
 
 #QuickSorting without Recursive
-print('\nQuick-sorting without recursive')
-#for student in quick_sorting_without_recursive_data:
-#    print(student)
-print(quick_sorting_without_recursive_time)
+print('\nQuick-Sorting without recursive')
+for idx in range(DATA_SIZE):
+    if idx % 1000 == 0:
+        print(quick_sorting_without_recursive_data[idx])
+print("Quick-Sorting without recursive time :", quick_sorting_without_recursive_time, end="\n\n")
 
 
 #QuickSorting with Recursive
@@ -209,10 +206,11 @@ quick_sorting_with_recursive_data = quicksort_recursive(quick_sorting_with_recur
 quick_sorting_with_recursive_time = time.time() - quick_sorting_with_recursive_time
 
 #QuickSorting with Recursive Result
-print('\nQuick-sorting with recursive')
-#for student in quick_sorting_with_recursive_data:
-#    print(student)
-print(quick_sorting_with_recursive_time)
+print('\nQuick-Sorting with recursive')
+for idx in range(DATA_SIZE):
+    if idx % 1000 == 0:
+        print(quick_sorting_with_recursive_data[idx])
+print("Quick-Sorting with recursive time :", quick_sorting_with_recursive_time, end="\n\n")
 
 
 
@@ -225,7 +223,9 @@ selection_sort(selection_sorting_data)
 selection_sorting_time = time.time() - selection_sorting_time
 
 #SelectionSorting Result
-print('\nselection-sorting')
-#for student in selection_sorting_data:
-#    print(student)
-print(selection_sorting_time)
+print('\nSelection-Sorting')
+for idx in range(DATA_SIZE):
+    if idx % 1000 == 0:
+        print(selection_sorting_data[idx])
+print("Selection-Sorting time :", selection_sorting_time, end="\n\n")
+

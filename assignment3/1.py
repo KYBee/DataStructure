@@ -3,7 +3,7 @@ import string
 import time
 
 #Define Data Size
-DATA_SIZE = 10000
+DATA_SIZE = 50000
 
 #Stack
 class Stack:
@@ -162,7 +162,8 @@ python_inherited_sorting_time = time.time() - python_inherited_sorting_time
 #Python Inherited Sorting Result
 print('\nPython inherited sorting')
 for idx in range(DATA_SIZE):
-    if idx % 1000 == 0:
+    #1000의 경우 50개의 데이터가 출력되어 2000으로 바꿔서 출력함
+    if idx % 2000 == 0:
         print(python_inherited_sorting[idx])
 print("python inherited sorting time :", python_inherited_sorting_time, end="\n\n")
 
@@ -178,7 +179,8 @@ heap_sorting_time = time.time() - heap_sorting_time
 #HeapSorting result
 print('\nHeap-Sorting')
 for idx in range(DATA_SIZE):
-    if idx % 1000 == 0:
+    #1000의 경우 50개의 데이터가 출력되어 2000으로 바꿔서 출력함
+    if idx % 2000 == 0:
         print(heap_sorting_data[idx])
 print("Heap-Sorting time :", heap_sorting_time, end="\n\n")
 
@@ -195,7 +197,8 @@ quick_sorting_without_recursive_time = time.time() - quick_sorting_without_recur
 #QuickSorting without Recursive
 print('\nQuick-Sorting without recursive')
 for idx in range(DATA_SIZE):
-    if idx % 1000 == 0:
+    #1000의 경우 50개의 데이터가 출력되어 2000으로 바꿔서 출력함
+    if idx % 2000 == 0:
         print(quick_sorting_without_recursive_data[idx])
 print("Quick-Sorting without recursive time :", quick_sorting_without_recursive_time, end="\n\n")
 
@@ -208,7 +211,8 @@ quick_sorting_with_recursive_time = time.time() - quick_sorting_with_recursive_t
 #QuickSorting with Recursive Result
 print('\nQuick-Sorting with recursive')
 for idx in range(DATA_SIZE):
-    if idx % 1000 == 0:
+    #1000의 경우 50개의 데이터가 출력되어 2000으로 바꿔서 출력함
+    if idx % 2000 == 0:
         print(quick_sorting_with_recursive_data[idx])
 print("Quick-Sorting with recursive time :", quick_sorting_with_recursive_time, end="\n\n")
 
@@ -225,7 +229,53 @@ selection_sorting_time = time.time() - selection_sorting_time
 #SelectionSorting Result
 print('\nSelection-Sorting')
 for idx in range(DATA_SIZE):
-    if idx % 1000 == 0:
+    #1000의 경우 50개의 데이터가 출력되어 2000으로 바꿔서 출력함
+    if idx % 2000 == 0:
         print(selection_sorting_data[idx])
 print("Selection-Sorting time :", selection_sorting_time, end="\n\n")
+
+# 정렬이 잘 되었는지 보증하는 알고리즘
+def is_sorted(target):
+    for i in range(len(target) - 1):
+        if target[i][1] > target[i + 1][1]:
+            print("not sorted well")
+            return
+        
+    print("well sorted")
+
+#original data의 sorting 여부
+print()
+print("Original Data well sorted?")
+is_sorted(original_data)
+print()
+
+#python inhereted sorting 의 sorting 여부
+print()
+print("Python Inherited Sorting Data well sorted?")
+is_sorted(python_inherited_sorting)
+print()
+
+#heap sorting의 sorting 여부
+print()
+print("Heap-Sorting Data well sorted?")
+is_sorted(heap_sorting_data)
+print()
+
+#quick sorting without recursive 의 sorting 여부
+print()
+print("Quick-Sorting without recursive Data well sorted?")
+is_sorted(quick_sorting_without_recursive_data)
+print()
+
+#quick sorting with recursive 의 sorting 여부
+print()
+print("Quick-Sorting with recursive Data well sorted?")
+is_sorted(quick_sorting_with_recursive_data)
+print()
+
+#selection sorting with recursive 의 sorting 여부
+print()
+print("Selection-Sorting Data well sorted?")
+is_sorted(selection_sorting_data)
+print()
 

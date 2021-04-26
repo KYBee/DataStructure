@@ -137,7 +137,7 @@ def selection_sort(a):
 #Making Original Data
 #학번 8자리 출력
 #O(n)
-random_id = random.sample(range(10000000, 100000000), DATA_SIZE)
+random_id = random.sample(range(20130000, 20220000), DATA_SIZE)
 original_data = list()
 for r in random_id:
     name = ''.join(random.choice(string.ascii_uppercase) for _ in range(10))
@@ -164,7 +164,7 @@ print('\nPython inherited sorting')
 for idx in range(DATA_SIZE):
     #1000의 경우 50개의 데이터가 출력되어 2000으로 바꿔서 출력함
     if idx % 2000 == 0:
-        print(python_inherited_sorting[idx])
+        print("%5d번 학생: 학번 -> %s, 이름 -> %s, 전화번호 -> %s" % (idx + 1, python_inherited_sorting[idx][0], python_inherited_sorting[idx][1], python_inherited_sorting[idx][2]))
 print("python inherited sorting time :", python_inherited_sorting_time, end="\n\n")
 
 
@@ -181,7 +181,7 @@ print('\nHeap-Sorting')
 for idx in range(DATA_SIZE):
     #1000의 경우 50개의 데이터가 출력되어 2000으로 바꿔서 출력함
     if idx % 2000 == 0:
-        print(heap_sorting_data[idx])
+        print("%5d번 학생: 학번 -> %s, 이름 -> %s, 전화번호 -> %s" % (idx + 1, heap_sorting_data[idx][0], heap_sorting_data[idx][1], heap_sorting_data[idx][2]))
 print("Heap-Sorting time :", heap_sorting_time, end="\n\n")
 
 
@@ -199,7 +199,7 @@ print('\nQuick-Sorting without recursive')
 for idx in range(DATA_SIZE):
     #1000의 경우 50개의 데이터가 출력되어 2000으로 바꿔서 출력함
     if idx % 2000 == 0:
-        print(quick_sorting_without_recursive_data[idx])
+        print("%5d번 학생: 학번 -> %s, 이름 -> %s, 전화번호 -> %s" % (idx + 1, quick_sorting_without_recursive_data[idx][0], quick_sorting_without_recursive_data[idx][1], quick_sorting_without_recursive_data[idx][2]))
 print("Quick-Sorting without recursive time :", quick_sorting_without_recursive_time, end="\n\n")
 
 
@@ -213,7 +213,7 @@ print('\nQuick-Sorting with recursive')
 for idx in range(DATA_SIZE):
     #1000의 경우 50개의 데이터가 출력되어 2000으로 바꿔서 출력함
     if idx % 2000 == 0:
-        print(quick_sorting_with_recursive_data[idx])
+        print("%5d번 학생: 학번 -> %s, 이름 -> %s, 전화번호 -> %s" % (idx + 1, quick_sorting_with_recursive_data[idx][0], quick_sorting_with_recursive_data[idx][1], quick_sorting_with_recursive_data[idx][2]))
 print("Quick-Sorting with recursive time :", quick_sorting_with_recursive_time, end="\n\n")
 
 
@@ -231,7 +231,7 @@ print('\nSelection-Sorting')
 for idx in range(DATA_SIZE):
     #1000의 경우 50개의 데이터가 출력되어 2000으로 바꿔서 출력함
     if idx % 2000 == 0:
-        print(selection_sorting_data[idx])
+        print("%5d번 학생: 학번 -> %s, 이름 -> %s, 전화번호 -> %s" % (idx + 1, selection_sorting_data[idx][0], selection_sorting_data[idx][1], selection_sorting_data[idx][2]))
 print("Selection-Sorting time :", selection_sorting_time, end="\n\n")
 
 # 정렬이 잘 되었는지 보증하는 알고리즘

@@ -8,8 +8,6 @@ class LinkedList:
         self.head = None
     
     def getNode(self, pos):
-        #이때 넘어오는 pos는 사용자가 입력한 pos 값에서 -1 해준 값임
-
         if pos < 0:
             return None
         
@@ -20,16 +18,25 @@ class LinkedList:
         
         return node
     
-    def insert(self, pos, elem):
-        before = self.getNode(pos - 1)
+    def insert(self, elem):
+        #before = self.getNode(pos - 1)
 
-        if before is None:
+        if self.head is None:
             #텅 빈 연결 리스트 이므로
             self.head = Node(elem, self.head)
             #self.head = Node(elem)
         
         else:
-            before.link = Node(elem, before.link)
+            before = self.head
+            while before.link is not None:
+                print('for debugging')
+                print(before.data[0], elem[0])
+                if before.data[0] > elem[0]:
+                    break
+                before = before.link
+
+            print("final before", before.data)
+            before.link = Node(elem, before)
         
     
     def delete(self, pos):
@@ -51,12 +58,25 @@ class LinkedList:
             node = node.link
 
 
+linked_dict = LinkedList()
+
 with open('./assignment4/randdict_utf8.TXT', encoding="utf-8") as f:
 
+    i = 0
     for line in f:
         line = line.strip().split(":")
         
         line = list(map(lambda x: x.strip(), line))
 
-        if line[1] == "":
-            print(line)
+        linked_dict.insert(line)
+
+        linked_dict.display()
+        print()
+
+        if i == 4:
+            break
+        else:
+            i += 1
+
+
+    linked_dict.display()

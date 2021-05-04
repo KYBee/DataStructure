@@ -50,3 +50,13 @@ class LinkedList:
             print(node.data)
             node = node.link
 
+
+with open('./assignment4/randdict_utf8.TXT', encoding="utf-8") as f:
+
+    for line in f:
+        line = line.strip().split(":")
+        
+        line = list(map(lambda x: x.strip(), line))
+
+        if line[1] == "":
+            print(line)

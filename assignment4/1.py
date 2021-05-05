@@ -7,6 +7,7 @@ class LinkedList:
     def __init__(self):
         head = Node(None)
         self.head = head
+        self.__count = 0
     
     def getNode(self, pos):
         #이때 넘어오는 pos는 사용자가 입력한 pos 값에서 -1 해준 값임
@@ -29,6 +30,7 @@ class LinkedList:
             before = before.link
 
         before.link = Node(elem, before.link)
+        self.__count += 1
     
     def delete(self, pos):
         before = self.getNode(pos - 1)
@@ -46,11 +48,14 @@ class LinkedList:
             print(node.link.data)
             node = node.link
 
+    def __len__(self):
+        return self.__count
+
 
 randdict = LinkedList()
 
-with open('randdict_utf8.TXT', 'r') as f:
-    
+# Get randdict
+with open('randdict_utf8.TXT', 'r') as f:  
     #for debugging
     i = 0
 
@@ -61,9 +66,38 @@ with open('randdict_utf8.TXT', 'r') as f:
         #TODO 올바르지 않은 형식의 사전 데이터 삭제
         randdict.insert(line)
 
-        if i == 3:
+        #print(line)
+
+        # if i == 3:
+        #     break
+        # else:
+        #     i += 1
+
+
+
+#for debugging
+randdict.display()
+
+while True:
+    question = input(">> ")
+
+    cur = randdict.head.link
+    in_dict = False
+
+    while question >= cur.data[0]:
+        if question == cur.data[0]:
+            print(cur.data[1])
+            in_dict = True
             break
         else:
-            i += 1
+            cur = cur.link
 
-    randdict.display()
+    if not in_dict:
+        print("찾을 수 없는 단어입니다. 뜻을 추가하세요(추가하지 않으려면 공백)")
+        meaning = input("> ")
+
+        if meaning == "":
+            print("추가하지 않습니다.")
+        else:
+            randdict.insert([question, meaning])
+            print("%s %s 가 추가되었습니다.(총 %d개 단어)" % (question, meaning, len(randdict)))

@@ -8,12 +8,12 @@ class Node:
 class LinkedList:
     def __init__(self):
 
-        #alphabet pointer 
-        #a, d, g, j, m, p, s, v, y
+        # alphabet pointer 
+        # a, d, g, j, m, p, s, v, y
         # self.alphabet = [
         #     Node(0), Node(3), Node(6), Node(9), Node(12), Node(15), Node(18), Node(21), Node(24)
         # ]
-        #self.head = self.alphabet[0]
+        # self.head = self.alphabet[0]
 
         self.__head = Node(None)
         self.__quick_head = Node(None)
@@ -24,6 +24,8 @@ class LinkedList:
         in_dict = False
         cur = self.__head
 
+        search_time = time.time()
+
         while cur.link != None and question >= cur.link.data[0]:
             if question == cur.link.data[0]:
                 print(cur.link.data[1])
@@ -32,20 +34,29 @@ class LinkedList:
             else:
                 cur = cur.link
 
-        if not in_dict:
-            print("찾을 수 없는 단어입니다. 뜻을 추가하세요(추가하지 않으려면 공백)")
-            meaning = input("> ")
+        search_time = time.time() - search_time
 
-            if meaning == "":
-                print("추가하지 않습니다.")
-            else:
-                self.insert([question, meaning])
-                print("%s %s 가 추가되었습니다.(총 %d개 단어)" % (question, meaning, len(self)))
+        return in_dict, search_time
+
+    def insert(self, question):
+
+        print("찾을 수 없는 단어입니다. 뜻을 추가하세요(추가하지 않으려면 공백)")
+        meaning = input("> ")
+
+        insert_time = time.time()
+        if meaning == "":
+            print("추가하지 않습니다.")
+        else:
+            self.initialize([question, meaning])
+            print("%s %s 가 추가되었습니다.(총 %d개 단어)" % (question, meaning, len(self)))
+        insert_time = time.time() - insert_time
+
+        return insert_time
 
     def quick_search(self, elem):
         pass
     
-    def insert(self, elem):
+    def initialize(self, elem):
         elem[0] = elem[0].lower()
 
         #alphabet = self.english.index(elem[0][1])
@@ -71,7 +82,8 @@ class LinkedList:
         return self.__count
 
 
-randdict = LinkedList()
+randdict_search = LinkedList()
+randdict_quick_search = LinkedList()
 
 # Get randdict
 with open('assignment4/randdict_utf8.TXT', 'r', encoding="utf-8") as f:  
@@ -86,17 +98,32 @@ with open('assignment4/randdict_utf8.TXT', 'r', encoding="utf-8") as f:
         if line[1] == "":
             continue
         else:
-            randdict.insert(line)
+            randdict_search.initialize(line)
+            #randdict_quick_search.insert(line)
 
         #print(line)
-        if i == 10:
+        if i == 40:
             break
         else:
             i += 1
 
 #for debugging
-randdict.display()
+randdict_search.display()
+#randdict_quick_search.display()
 
 while True:
     question = input(">> ")
-    randdict.search(question)
+
+    #일반적인 search
+    in_dict, randdict_search_time = randdict_search.search(question)
+
+    if not in_dict:
+        randdict_insert_time = randdict_search.insert(question)
+
+    #빠르게 개선한 search
+    # randdict_quick_search_time = time.time()
+    # randdict_quick_search.search(question)
+    # randdict_quick_search_time = time.time() - randdict_quick_search_time
+
+    print("randdict search time", randdict_search_time)
+    #print("randdict quick search time", randdict_quick_search_time)

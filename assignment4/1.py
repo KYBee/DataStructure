@@ -8,10 +8,12 @@ class LinkedList:
 
         #alphabet pointer 
         #a, d, g, j, m, p, s, v, y
-        self.alphabet = [
-            Node(0), Node(3), Node(6), Node(9), Node(12), Node(15), Node(18), Node(21), Node(24)
-        ]
-        self.head = self.alphabet[0]
+        # self.alphabet = [
+        #     Node(0), Node(3), Node(6), Node(9), Node(12), Node(15), Node(18), Node(21), Node(24)
+        # ]
+        #self.head = self.alphabet[0]
+
+        self.head = Node(None)
 
         self.english = "abcdefghijklmnopqrstuvwxyz"
         self.__count = 0
@@ -31,10 +33,10 @@ class LinkedList:
     def insert(self, elem):
         elem[0] = elem[0].lower()
 
-        alphabet = self.english.index(elem[0][1])
-        print("alphabet", alphabet)
+        #alphabet = self.english.index(elem[0][1])
+        #print("alphabet", alphabet)
 
-        before = self.alphabet[alphabet]
+        before = self.head
 
         while before.link != None:
             if before.link.data[0] > elem[0]:
@@ -67,7 +69,7 @@ class LinkedList:
 randdict = LinkedList()
 
 # Get randdict
-with open('randdict_utf8.TXT', 'r') as f:  
+with open('assignment4/randdict_utf8.TXT', 'r', encoding="utf-8") as f:  
     #for debugging
     i = 0
 

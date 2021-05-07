@@ -77,18 +77,21 @@ with open('assignment4/randdict_utf8.TXT', 'r', encoding="utf-8") as f:
         line = line.strip().split(":")
         line = list(map(lambda x: x.strip(), line))
 
-        #TODO 올바르지 않은 형식의 사전 데이터 삭제
-        randdict.insert(line)
+        #형식에 맞지 않으면 추가하지 않음
+        if line[1] == "":
+            continue
+        else:
+            randdict.insert(line)
 
         #print(line)
 
-        if i == 40:
+        if i == 10000:
             break
         else:
             i += 1
 
 #for debugging
-randdict.display()
+#randdict.display()
 
 while True:
     question = input(">> ")

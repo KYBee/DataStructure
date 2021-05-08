@@ -9,20 +9,20 @@ class Node:
 
 class LinkedList:
     def __init__(self):
-        self.num_head = Node(None)
-        self.name_head = Node(None)
+        self.__num_head = Node(None)
+        self.__name_head = Node(None)
     
     def insert(self, student):
         student = Node(student)
 
-        before = self.num_head
+        before = self.__num_head
         while before.num_link != None:
             if before.num_link.data[0] > student.data[0]:
                 break
             before = before.num_link
         before.num_link, student.num_link = student, before.num_link
 
-        before = self.name_head
+        before = self.__name_head
         while before.name_link != None:
             if before.name_link.data[1] > student.data[1]:
                 break
@@ -32,7 +32,7 @@ class LinkedList:
     def display(self, op):
         if op == "1":
             cnt = 0
-            node = self.num_head
+            node = self.__num_head
             while node.num_link != None:
                 cnt += 1
                 if cnt % 100 == 0:
@@ -40,7 +40,7 @@ class LinkedList:
                 node = node.num_link
         elif op == "2":
             cnt = 0
-            node = self.name_head
+            node = self.__name_head
             while node.name_link != None:
                 cnt += 1
                 if cnt % 100 == 0:

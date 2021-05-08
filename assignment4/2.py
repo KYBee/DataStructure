@@ -36,14 +36,14 @@ class LinkedList:
         before.name_link, student.name_link = student, before.name_link
 
     #학번 or 이름을 옵션으로 받아서 입력받은 옵션에 해당하는 head를 기준으로 결과를 출력한다.
-    #결과는 100명당 1번씩 출력했다.
+    #결과는 250명당 1번씩 출력했다.
     def display(self, op):
         if op == "1":
             cnt = 0
             node = self.__num_head
             while node.num_link != None:
                 cnt += 1
-                if cnt % 100 == 0:
+                if cnt % 250 == 0:
                     print("%5d번 학생: 학번 -> %s, 이름 -> %s, 전화번호 -> %s" % (cnt, node.num_link.data[0], node.num_link.data[1], node.num_link.data[2]))
                 node = node.num_link
         elif op == "2":
@@ -51,7 +51,7 @@ class LinkedList:
             node = self.__name_head
             while node.name_link != None:
                 cnt += 1
-                if cnt % 100 == 0:
+                if cnt % 250 == 0:
                     print("%5d번 학생: 학번 -> %s, 이름 -> %s, 전화번호 -> %s" % (cnt, node.name_link.data[0], node.name_link.data[1], node.name_link.data[2]))
                 node = node.name_link
         else:

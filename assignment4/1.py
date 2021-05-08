@@ -116,7 +116,6 @@ class LinkedList:
 randdict= LinkedList()
 
 with open('assignment4/randdict_utf8.TXT', 'r', encoding="utf-8") as f:  
-    i = 0
     for line in f:
         line = line.strip().split(":")
         line = list(map(lambda x: x.strip(), line))
@@ -126,12 +125,6 @@ with open('assignment4/randdict_utf8.TXT', 'r', encoding="utf-8") as f:
             continue
         else:
             randdict.initialize(line)
-        
-        if i == 1000:
-            break
-        i += 1
-
-randdict.display()
 
 while True:
     question = input(">> ")

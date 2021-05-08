@@ -7,35 +7,39 @@ class Node:
 
 class QuickLinkedList:
     def __init__(self):
-        self.alphabet = []
+        self.alphabet = [0] * 26
         self.__head = Node(None)
         self.__english = "abcdefghijklmnopqrstuvwxyz"
         self.__count = 0
 
     def quick_search(self, question):
         in_dict = False
-        cur = self.__head
+        alphabet = self.__english.index(question[0][0])
 
-        search_time = time.time()
+        if self.alphabet[alphabet] == 0:
+            print("없네요")
+            return in_dict, 0
+        else:
+            cur = self.alphabet[alphabet]
+            search_time = time.time()
 
-        while cur.link != None and question >= cur.link.data[0]:
-            if question == cur.link.data[0]:
-                print(cur.link.data[1])
-                in_dict = True
-                break
-            else:
-                cur = cur.link
+            while cur.link != None and question >= cur.data[0]:
+                if question == cur.data[0]:
+                    print(cur.data[1])
+                    in_dict = True
+                    break
+                else:
+                    cur = cur.link
 
-        search_time = time.time() - search_time
+            search_time = time.time() - search_time
 
-        return in_dict, search_time        
+            return in_dict, search_time        
 
     def quick_initialize(self, elem):
         elem[0] = elem[0].lower()
 
-        #alphabet = self.english.index(elem[0][1])
-        #print("alphabet", alphabet)
-
+        #알파벳의 index
+        alphabet = self.__english.index(elem[0][0])
         before = self.__head
 
         while before.link != None:
@@ -44,6 +48,13 @@ class QuickLinkedList:
             before = before.link
 
         before.link = Node(elem, before.link)
+
+        if self.alphabet[alphabet] == 0:
+            self.alphabet[alphabet] = before.link
+        else:
+            if self.alphabet[alphabet].data[0] > before.link.data[0]:
+                self.alphabet[alphabet] = before.link
+
         self.__count += 1
 
     def quick_insert(self, question):
@@ -54,7 +65,7 @@ class QuickLinkedList:
         if meaning == "":
             print("추가하지 않습니다.")
         else:
-            self.initialize([question, meaning])
+            self.quick_initialize([question, meaning])
             print("%s %s 가 추가되었습니다.(총 %d개 단어)" % (question, meaning, len(self)))
         insert_time = time.time() - insert_time
 
@@ -131,7 +142,7 @@ class LinkedList:
         return self.__count
 
 
-randdict_search = LinkedList()
+randdict_search = QuickLinkedList()
 randdict_quick_search = QuickLinkedList()
 
 # Get randdict
@@ -147,7 +158,7 @@ with open('assignment4/randdict_utf8.TXT', 'r', encoding="utf-8") as f:
         if line[1] == "":
             continue
         else:
-            randdict_search.initialize(line)
+            randdict_search.quick_initialize(line)
             #randdict_quick_search.insert(line)
 
         #print(line)
@@ -158,21 +169,32 @@ with open('assignment4/randdict_utf8.TXT', 'r', encoding="utf-8") as f:
 
 #for debugging
 randdict_search.display()
+
+print()
+
+for line in randdict_search.alphabet:
+    if line != 0:
+        print(line.data[0])
 #randdict_quick_search.display()
 
 while True:
     question = input(">> ")
 
     #일반적인 search
-    in_dict, randdict_search_time = randdict_search.search(question)
+    in_dict, randdict_search_time = randdict_search.quick_search(question)
 
     if not in_dict:
-        randdict_insert_time = randdict_search.insert(question)
+        randdict_insert_time = randdict_search.quick_insert(question)
 
     #빠르게 개선한 search
     # randdict_quick_search_time = time.time()
     # randdict_quick_search.search(question)
     # randdict_quick_search_time = time.time() - randdict_quick_search_time
 
-    print("randdict search time", randdict_search_time)
+    #print("randdict search time", randdict_search_time)
     #print("randdict quick search time", randdict_quick_search_time)
+
+
+    for line in randdict_search.alphabet:
+        if line != 0:
+            print(line.data[0])

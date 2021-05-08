@@ -12,13 +12,14 @@ class LinkedList:
 
         #더 빠른 search를 위한 메서드
         self.alphabet = [0] * 26
+        self.alphabet = {}
         self.__english = "abcdefghijklmnopqrstuvwxyz"
 
     def quick_search(self, question):
         in_dict = False
         alphabet = self.__english.index(question[0][0])
 
-        if self.alphabet[alphabet] == 0:
+        if alphabet not in self.alphabet:
             return in_dict, 0
         else:
             cur = self.alphabet[alphabet]
@@ -77,7 +78,7 @@ class LinkedList:
         #더 빠른 search를 위한 개선 사항
         alphabet = self.__english.index(elem[0][0])
 
-        if self.alphabet[alphabet] == 0:
+        if alphabet not in self.alphabet:
             self.alphabet[alphabet] = before.link
         else:
             if self.alphabet[alphabet].data[0] > before.link.data[0]:
@@ -112,7 +113,7 @@ with open('assignment4/randdict_utf8.TXT', 'r', encoding="utf-8") as f:
             randdict_search.initialize(line)
 
         #print(line)
-        if i == 1000:
+        if i == 50:
             break
         else:
             i += 1
@@ -135,6 +136,6 @@ while True:
     print("randdict search time", randdict_search_time)
     print("randdict quick search time", randdict_quick_search_time)
 
-    for line in randdict_search.alphabet:
-        if line != 0:
-            print(line.data[0])
+    #for debuggin randdict.alphabet
+    for name in randdict_search.alphabet.keys():
+        print(randdict_search.alphabet[name].data[0])

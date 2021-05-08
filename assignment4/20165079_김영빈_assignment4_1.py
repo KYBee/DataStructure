@@ -115,7 +115,7 @@ class LinkedList:
 # 사전의 역할을 할 randdict 선언 후 LinkedList인스턴스를 할당했다.
 randdict= LinkedList()
 
-with open('assignment4/randdict_utf8.TXT', 'r', encoding="utf-8") as f:  
+with open('randdict_utf8.TXT', 'r', encoding="utf-8") as f:  
     for line in f:
         line = line.strip().split(":")
         line = list(map(lambda x: x.strip(), line))

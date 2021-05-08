@@ -1,3 +1,6 @@
+import random
+import string
+
 class Node:
     def __init__(self, data, link=None):
         self.data = data
@@ -57,26 +60,19 @@ class LinkedList:
             print(node.data)
             node = node.link
 
-
-linked_dict = LinkedList()
-
-with open('./assignment4/randdict_utf8.TXT', encoding="utf-8") as f:
-
-    i = 0
-    for line in f:
-        line = line.strip().split(":")
-        
-        line = list(map(lambda x: x.strip(), line))
-
-        linked_dict.insert(line)
-
-        linked_dict.display()
-        print()
-
-        if i == 4:
-            break
-        else:
-            i += 1
+DATA_SIZE = 10
+#Making Original Data
+#학번 8자리 출력
+#O(n)
+random_id = random.sample(range(20130000, 20220000), DATA_SIZE)
+original_data = list()
+for r in random_id:
+    name_len = random.randint(1, 10)
+    name = ''.join(random.choice(string.ascii_uppercase) for _ in range(name_len))
+    phone_number = "010" + str(format(random.randint(0, 100000000), "08")) 
+    original_data.append([r, name, phone_number])
 
 
-    linked_dict.display()
+#for debugging
+for student in original_data:
+    print(student)

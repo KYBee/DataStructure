@@ -5,19 +5,75 @@ class Node:
         self.data = data
         self.link = link
 
+class QuickLinkedList:
+    def __init__(self):
+        self.alphabet = []
+        self.__head = Node(None)
+        self.__english = "abcdefghijklmnopqrstuvwxyz"
+        self.__count = 0
+
+    def quick_search(self, question):
+        in_dict = False
+        cur = self.__head
+
+        search_time = time.time()
+
+        while cur.link != None and question >= cur.link.data[0]:
+            if question == cur.link.data[0]:
+                print(cur.link.data[1])
+                in_dict = True
+                break
+            else:
+                cur = cur.link
+
+        search_time = time.time() - search_time
+
+        return in_dict, search_time        
+
+    def quick_initialize(self, elem):
+        elem[0] = elem[0].lower()
+
+        #alphabet = self.english.index(elem[0][1])
+        #print("alphabet", alphabet)
+
+        before = self.__head
+
+        while before.link != None:
+            if before.link.data[0] > elem[0]:
+                break
+            before = before.link
+
+        before.link = Node(elem, before.link)
+        self.__count += 1
+
+    def quick_insert(self, question):
+        print("찾을 수 없는 단어입니다. 뜻을 추가하세요(추가하지 않으려면 공백)")
+        meaning = input("> ")
+
+        insert_time = time.time()
+        if meaning == "":
+            print("추가하지 않습니다.")
+        else:
+            self.initialize([question, meaning])
+            print("%s %s 가 추가되었습니다.(총 %d개 단어)" % (question, meaning, len(self)))
+        insert_time = time.time() - insert_time
+
+        return insert_time
+
+    def display(self):
+        node = self.__head
+        while node.link != None:
+            print(node.link.data)
+            node = node.link
+
+    def __len__(self):
+        return self.__count
+
+
+
 class LinkedList:
     def __init__(self):
-
-        # alphabet pointer 
-        # a, d, g, j, m, p, s, v, y
-        # self.alphabet = [
-        #     Node(0), Node(3), Node(6), Node(9), Node(12), Node(15), Node(18), Node(21), Node(24)
-        # ]
-        # self.head = self.alphabet[0]
-
         self.__head = Node(None)
-        self.__quick_head = Node(None)
-        self.__english = "abcdefghijklmnopqrstuvwxyz"
         self.__count = 0
 
     def search(self, question):
@@ -52,18 +108,11 @@ class LinkedList:
         insert_time = time.time() - insert_time
 
         return insert_time
-
-    def quick_search(self, elem):
-        pass
     
     def initialize(self, elem):
         elem[0] = elem[0].lower()
 
-        #alphabet = self.english.index(elem[0][1])
-        #print("alphabet", alphabet)
-
         before = self.__head
-
         while before.link != None:
             if before.link.data[0] > elem[0]:
                 break
@@ -83,7 +132,7 @@ class LinkedList:
 
 
 randdict_search = LinkedList()
-randdict_quick_search = LinkedList()
+randdict_quick_search = QuickLinkedList()
 
 # Get randdict
 with open('assignment4/randdict_utf8.TXT', 'r', encoding="utf-8") as f:  

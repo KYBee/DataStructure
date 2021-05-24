@@ -44,7 +44,7 @@ class TreeA :
                 level += 1
                 return self.__search_node(cur.right, item, level)
 
-    #item을 트리에 이진 탐색 트리에 특성에 맞도록 추가하는 메서드
+    #item을 트리에 이진 탐색 트리의 특성에 맞도록 추가하는 메서드
     def insert(self, item):
         if self.root is None:
             self.root = Node(item)
@@ -112,7 +112,7 @@ class TreeB :
                 level += 1
                 return self.__search_node(cur.right, item, level)
 
-    #item을 트리에 이진 탐색 트리에 특성에 맞도록 추가하는 메서드
+    #item을 트리에 이진 탐색 트리의 특성에 맞도록 추가하는 메서드
     def insert(self, item):
         if self.root is None:
             self.root = Node(item)

@@ -108,6 +108,11 @@ class Calculator :
         self.value = self.postorder_calculate(self.tree.root)
         print("\n계산 결과 :", self.value)
 
+        #initialize
+        self.value = 0
+        self.equation = None
+        self.tree.root = None
+
     def postorder_calculate(self, n):
         if n != None :
             left = self.postorder_calculate(n.left)
@@ -131,4 +136,5 @@ class Calculator :
         self.print_result()
         
 c = Calculator()
-c.run()
+while True:
+    c.run()

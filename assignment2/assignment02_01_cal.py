@@ -88,12 +88,10 @@ def get_value(equation):
             n1 = calculating_stack.pop()
 
             if token == "+":
-                print(n1, "+", n2)
                 result = int(n1) + int(n2)
             elif token == "-":
                 result = int(n1) - int(n2)
             elif token == "*":
-                print(n1, "*", n2)
                 result = int(n1) * int(n2)
             elif token == "%":
                 result = int(n1) % int(n2)
@@ -101,7 +99,6 @@ def get_value(equation):
                 result = int(n1) ** int(n2)
 
             calculating_stack.push(result)
-
         else:
             calculating_stack.push(token)
 

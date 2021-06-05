@@ -1,4 +1,3 @@
-import collections
 import random
 
 class Node :
@@ -68,20 +67,15 @@ class TreeA :
             root.right = self.initialize(word_list[root_num + 1:])
             return root
 
-
     #트리의 높이를 구하는 메서드
     def calc_height(self, n=None):
         if n is None: return 0
         return 1 + max(self.calc_height(n.left), self.calc_height(n.right))
 
-    
-
     # 총 몇개의 노드가 있는지를 구하는 메서드
     def get_total_count(self, n):
         if n is None: return 0
         return 1 + self.get_total_count(n.left) + self.get_total_count(n.right)
-
-
 
 #결과를 출력하는 함수
 def print_result(tree, search_list):
@@ -102,9 +96,6 @@ DATA_SIZE = 10
 #파일을 열어서 단어를 읽어온다.
 with open('./randdict_utf8.TXT', 'r', encoding="utf-8") as f:  
     
-    # i 는 디버깅을 위한 변수
-    i = 0
-    
     #word_list는 단어를 랜덤하게 선택하기 위해 저장해두는 리스트
     word_list = list()
 
@@ -117,12 +108,6 @@ with open('./randdict_utf8.TXT', 'r', encoding="utf-8") as f:
             continue
         else:
             word_list.append(line)
-            
-            #아래 2줄은 디버깅을 위한 코드
-        print(i, line)
-        i+=1
-        #if i % 15 == 0:
-        #    break
 
 word_list = sorted(word_list, key=lambda word: word[0])
 

@@ -45,6 +45,7 @@ class TreeA :
                 return self.__search_node(cur.right, item, level)
 
 
+    #입력받은 word_list를 이진 트리의 형태로 initialize한다.
     def initialize(self, word_list):
         data_length = len(word_list)
 
@@ -110,11 +111,10 @@ with open('./randdict_utf8.TXT', 'r', encoding="utf-8") as f:
             word_list.append(line)
 
 word_list = sorted(word_list, key=lambda word: word[0])
-
 treeA = TreeA(word_list)
 
 #랜덤으로 DATA_SIZE만큼의 단어를 선택함
 search_list = random.sample(word_list, DATA_SIZE)
 
-#treeA와 treeB의 결과 출력
+#treeA의 결과 출력
 print_result(treeA, search_list)

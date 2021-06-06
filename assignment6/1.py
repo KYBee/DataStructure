@@ -40,16 +40,29 @@ class Map:
         for station in cur.adjacent_stations.keys():
             distance[station] = [cur.adjacent_stations[station], cur.name]
 
-        nearest, weight = sorted(distance.items(), key=lambda item: item[1])[0]
-        del distance[nearest]
-        final_distance[nearest] = weight
 
 
-        for i in range(30):
-        #while True:
+
+        #for i in range(3): 
+        while len(distance) != 0:
             #가장 작은 weight를 가진 역을 하나 뽑아서 target으로 설정한다.
             
+            nearest, weight = sorted(distance.items(), key=lambda item: item[1])[0]
+            del distance[nearest]
+            weight[0] += final_distance[weight[1]][0]
+            final_distance[nearest] = weight
+
+
+            print("final_distance 한 번 끝")
+            print(distance)
+            print(final_distance)
+            print()
+
+
             cur = self.stations[nearest]
+
+            print(cur)
+            print()
 
             for station in cur.adjacent_stations.keys():
                 if station in final_distance:
@@ -64,17 +77,12 @@ class Map:
                 else:
                     distance[station] = [cur.adjacent_stations[station], cur.name]
 
-            print("distance 한 번 끝")
-            print(distance)
-            print(final_distance)
-            print()
-            print(cur)
-            print()
 
-            nearest, weight = sorted(distance.items(), key=lambda item: item[1])[0]
-            del distance[nearest]
-            final_distance[nearest] = weight
-            print("final distance 한 번 끝")
+
+            # nearest, weight = sorted(distance.items(), key=lambda item: item[1])[0]
+            # del distance[nearest]
+            # final_distance[nearest] = weight
+            print("distance 한 번 끝")
             print(distance)
             print(final_distance)
             print()

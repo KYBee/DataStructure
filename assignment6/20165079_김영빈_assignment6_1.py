@@ -52,7 +52,7 @@ class Map:
             self.stations[station2].adjacent_stations[station1] = weight
 
     #다익스트라 알고리즘을 사용하여 최소 경로를 구한다. 
-    def get_distance(self, start, end):
+    def get_path(self, start, end):
         #distance는 경로 확정이 되지 않은 역들이 모여있는 Dictionary
         #final_distance는 경로 확정이 된 역들이 모여있는 Dictionary 
 
@@ -154,6 +154,6 @@ while True:
     #사용자의 입력에 따라 경로를 구하여 표시하거나 다시 입력을 받도록 한다.
     if start in Seoul_Train.stations and end in Seoul_Train.stations:
         print("경로와 거리를 표시한다.")
-        Seoul_Train.get_distance(start, end)
+        Seoul_Train.get_path(start, end)
     else:
         print("존재하는 역을 입력해주세요\n\n")

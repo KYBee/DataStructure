@@ -38,7 +38,7 @@ class LinkedList:
         else:
             removed = before.link
             before.link = removed.link
-            
+
         del(removed)
 
     def print(self):
@@ -47,11 +47,36 @@ class LinkedList:
 
         n = self.head
         while n != None:
-            print(n.data)
+            print(n.data, end=" ")
             n = n.link
+        
+        print()
+
+    def search(self, data):
+        if self.head == None:
+            return "There's no data"
+        else:
+            node = self.head
+            while node != None:
+                if node.data == data:
+                    break
+                node = node.link
+
+            return node
+
+    def merge(self, behind):
+        if self.head == None:
+            self.head = behind.head
+        else:
+            node = self.head
+            while node.link != None:
+                node = node.link
+            
+            node.link = behind.head
 
 a = LinkedList()
 a.print()
+a.delete(3)
 a.insert(4, 20)
 a.print()
 
@@ -62,4 +87,17 @@ a.insert(1, 30)
 a.print()
 
 a.delete(0)
+a.print()
+
+b = LinkedList()
+b.insert(0, -20)
+b.insert(0, -30)
+
+print("Searching")
+print(a.search(10))
+
+print("Merging")
+b.print()
+a.merge(b)
+
 a.print()

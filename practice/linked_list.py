@@ -89,7 +89,7 @@ class LinkedList:
 a = LinkedList()
 a.print()
 a.delete(3)
-a.insert(4, 20)
+a.insert(0, 20)
 a.print()
 
 a.insert(0, 25)

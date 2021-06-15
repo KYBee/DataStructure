@@ -34,9 +34,18 @@ class LinkedList:
             node = node.next
         print()
 
+    def search(self, data):
+        node = self.head.next
+        while node is not None:
+            if node.data == data: break
+            node = node.next
+
+        return node
+
 
 s = LinkedList()
 s.insert(0, 10)
 s.insert(0, 20)
 s.insert(1, 30)
+print(s.search(10).data)
 s.display()

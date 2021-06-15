@@ -15,6 +15,7 @@ class LinkedStack:
         n = Node(elem, self.top)
         self.top = n
     
+    #공백 상태 반드시 검사
     def pop(self):
         if self.top == None:
             return self.top
@@ -41,6 +42,7 @@ class LinkedStack:
 
             n = n.link
 
+    #공백 상태 필수 평가
     def peak(self):
         if self.top == None:
             return self.top
@@ -72,3 +74,6 @@ print(st.peak())
 p3 = st.pop()
 print("p3", p3)
 print(st.peak())
+
+
+print(st.is_empty())

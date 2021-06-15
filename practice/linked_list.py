@@ -74,6 +74,18 @@ class LinkedList:
             
             node.link = behind.head
 
+    def reverse(self):
+        p = self.head
+        q = None
+        while p != None:
+            r = q
+            q = p
+            p = p.link
+            q.link = r
+        
+        self.head = q
+
+
 a = LinkedList()
 a.print()
 a.delete(3)
@@ -100,4 +112,8 @@ print("Merging")
 b.print()
 a.merge(b)
 
+a.print()
+
+
+a.reverse()
 a.print()

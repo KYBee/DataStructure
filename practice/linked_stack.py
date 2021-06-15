@@ -16,9 +16,11 @@ class LinkedStack:
         self.top = n
     
     def pop(self):
+        if self.top == None:
+            return self.top
         n = self.top
         self.top = n.link
-        return self.top.data
+        return n.data
 
     def is_empty(self):
         return self.top == None
@@ -28,6 +30,7 @@ class LinkedStack:
         #되도록이면 del 해주는 것도 좋음
 
     def print(self):
+        #top이 None인 경우 따로 처리 해야 함
         if self.top == None:
             return self.top
 
@@ -38,6 +41,10 @@ class LinkedStack:
 
             n = n.link
 
+    def peak(self):
+        if self.top == None:
+            return self.top
+        return self.top.data
 
 
 st = LinkedStack()
@@ -59,3 +66,9 @@ print("Printing after pop")
 print("p1", p1)
 print("p2", p2)
 st.print()
+
+print("Printing peak")
+print(st.peak())
+p3 = st.pop()
+print("p3", p3)
+print(st.peak())

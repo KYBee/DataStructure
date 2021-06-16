@@ -7,7 +7,6 @@ def dfs(graph, start, visited = set()):
             dfs(graph, v, visited)
 
 
-
 mygraph = {
     "A" : {"B", "C"},
     "B" : {"A", "D"},

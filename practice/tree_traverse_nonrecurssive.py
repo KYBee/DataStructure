@@ -25,17 +25,34 @@ class Tree:
 
     def inorder_not_recursive(self, node):
         while True:
+
             while node != None:
                 self.stack.append(node)
                 node = node.left
 
             if len(self.stack) == 0:
                 break
-
             node = self.stack.pop()
 
             print(node.data)
             node = node.right
+
+    def postorder_not_recursive(self, node):
+        s = list([node])
+        o = list()
+
+        while len(s) != 0:
+            root = s.pop()
+            o.append(root)
+
+            if root.right is not None:
+                s.append(root.right)
+            if root.left is not None:
+                s.append(root.left)
+
+        while len(o) != 0:
+            print(o.pop().data)
+
 
 
 n1 = Node(1)
